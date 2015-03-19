@@ -1,8 +1,10 @@
+import java.util.List;
+
 /**
- * Created by Fredrik on 3/17/2015.
+ * Created by Bengan on 3/17/2015.
  */
-public class GroupControl {
+public interface GroupControl {
 
-
+	public abstract Car assignElevator(List<Shaft> shafts);
 
 }
