@@ -22,6 +22,7 @@ public class TrafficPattern {
         this.totalPassengers = totalPassengers;
         this.building = building;
         this.steps = new ArrayList<Step>();
+        ElevatorEngine.R.totalPassengers = totalPassengers;
 
 
         switch (currentPattern) {
@@ -53,6 +54,10 @@ public class TrafficPattern {
         }
 
         return calls;
+    }
+
+    public int remainingSteps() {
+        return steps.size();
     }
 
     private void upPeak() {

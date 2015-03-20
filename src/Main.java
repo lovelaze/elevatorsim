@@ -6,8 +6,8 @@ public class Main {
         ElevatorEngine engine = new ElevatorEngine(building);
 
         engine.start();
-        while (engine.getSimulationResult() == null) { }
-        SimulationResult res = engine.getSimulationResult();
-        res.printResult();
+        while (!engine.isRunning()) {}
+        engine.stop();
+        ElevatorEngine.R.printResult();
     }
 }

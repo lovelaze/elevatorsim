@@ -4,9 +4,13 @@ import java.util.List;
 /**
  * Created by Bengan on 3/19/2015.
  */
-public class DefaultGroupController implements  GroupControl {
+public class DefaultGroupController extends GroupControl {
 
 
+
+    public DefaultGroupController(Building building) {
+        super(building);
+    }
 
     @Override
     public Car assignElevator(List<Shaft> shafts) {
@@ -20,7 +24,8 @@ public class DefaultGroupController implements  GroupControl {
     }
 
     @Override
-    public void sendCalls(ArrayList<Call> calls) {
+    public void controlElevators() {
 
     }
+
 }
