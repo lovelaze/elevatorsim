@@ -1,5 +1,5 @@
 /**
- * Created by Fredrik on 3/19/2015.
+ * Created by Bengan on 3/19/2015.
  */
 public class SimulationResult {
 
