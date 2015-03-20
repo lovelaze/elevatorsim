@@ -13,11 +13,55 @@ public class Car {
     private Direction direction;
     private Floor location;
     private ArrayList<Passenger> passengers;
-    private ArrayList<Call> assigendCalls;
+    private Call assigendCall;
+    private int progress = 0;
+
 
     public Car(Floor location) {
         direction = Direction.Idle;
         this.location = location;
+    }
+
+    public boolean isBusy() {
+        return direction != Direction.Idle || assigendCall != null;
+    }
+
+    public void move(Floor destination, Building building){
+
+        if(destination.getLevel() < location.getLevel())
+            direction = Direction.Down;
+        else if(destination.getLevel() > location.getLevel())
+            direction = Direction.Up;
+        else if(destination.getLevel() == location.getLevel())
+            direction = Direction.Idle;
+
+        switch (direction) {
+            case Idle:
+                break;
+            case Left:
+                break;
+            case Right:
+                break;
+            case Up:
+                progress++;
+                break;
+            case Down:
+                progress--;
+               break;
+        }
+
+        if (progress >= Parameters.travelTicks) {
+            location = building.getAboveFloor(location);
+            progress = 0;
+        } else if (progress <= -Parameters.travelTicks) {
+            location = building.getUnderFloor(location);
+            progress = 0;
+        }
+
+    }
+
+    public int getProgress() {
+        return progress;
     }
 
     public Floor getLocation() {
@@ -29,7 +73,7 @@ public class Car {
     }
 
     public void assignTo(Call call) {
-    	assigendCalls.add(call);
+    	assigendCall = call;
     }
 
     public void addPassenger(Passenger passenger) {

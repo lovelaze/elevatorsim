@@ -53,6 +53,10 @@ public class Call {
         return timePickedUp-timeRequest;
     }
 
+    public void setAssignee(Car assignee) {
+        this.assignee = assignee;
+    }
+
     public Car getAssignee() {
         return assignee;
     }

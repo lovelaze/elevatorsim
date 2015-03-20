@@ -7,7 +7,10 @@ import java.util.List;
 public abstract class GroupControl {
 
 	protected Building building;
-    protected ArrayList<Call> calls = new ArrayList<Call>();
+    protected ArrayList<Call> newCalls = new ArrayList<Call>();
+    protected ArrayList<Call> assignedCalls = new ArrayList<Call>();
+
+
     protected Thread t;
     private boolean running = true;
 
@@ -24,12 +27,12 @@ public abstract class GroupControl {
     public abstract void controlElevators();
 
     public synchronized void addCalls (ArrayList<Call> calls) {
-        this.calls.addAll(calls);
+        this.newCalls.addAll(calls);
         ElevatorEngine.R.totalCalls += calls.size();
     }
 
     public synchronized int remainingCalls() {
-        return calls.size();
+        return newCalls.size() + assignedCalls.size();
     }
 
     public void stopControlling() {

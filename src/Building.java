@@ -16,12 +16,36 @@ public class Building {
 		shafts = new ArrayList<Shaft>();
     }
 
+    public Floor getAboveFloor(Floor floor) {
+        int index = floors.indexOf(floor);
+        if (index == floors.size()-1 ) {
+            return null;
+        }
+        return floors.get(index+1);
+    }
+
+    public Floor getUnderFloor(Floor floor) {
+        int index = floors.indexOf(floor);
+        if (index == 0) {
+            return null;
+        }
+        return floors.get(index-1);
+    }
+
     public int getNumberOfFloors() {
         return floors.size();
     }
 
     public ArrayList<Shaft> getShafts() {
         return shafts;
+    }
+
+    public ArrayList<Car> getCars() {
+        ArrayList<Car> cars = new ArrayList<Car>();
+        for(Shaft shaft : shafts) {
+            cars.addAll(shaft.getCars());
+        }
+        return cars;
     }
 
     public ArrayList<Floor> getFloors() {
