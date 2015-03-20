@@ -14,8 +14,8 @@ public class Passenger {
     }
 
     public Call makeCall() {
-    	call = new Call(start, destination);
-    	return call;
+    	return new Call(start, destination);
+
     }
 
     public Call getCurrentCall() {

@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 /**
@@ -16,10 +17,12 @@ public class ElevatorEngine implements ActionListener {
     private boolean isFinished;
     private TrafficPattern pattern;
 
+    private ArrayList<Call> currentCalls;
+
     public ElevatorEngine(Building building) {
         this.building = building;
         groupController = new DefaultGroupController();
-        timer = new Timer(1000, this);
+        timer = new Timer(500, this);
         R = new SimulationResult();
         isFinished = false;
         pattern = new TrafficPattern( TrafficPattern.CallPattern.UpPeak, building, 1000);
@@ -41,7 +44,9 @@ public class ElevatorEngine implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	pattern.nextStep();
+        currentCalls = pattern.nextStep();
+        groupController.sendCalls(currentCalls);
+
     	System.out.println("STEP");
     }
 }

@@ -51,4 +51,13 @@ public class Building {
     public Floor getTerminalFloor() {
     	return terminalFloor;
     }
+
+    public Floor getFloor(int index) {
+        Floor returnFloor = null;
+        for(Floor f : floors) {
+            if(f.getLevel() == index)
+                returnFloor = f;
+        }
+        return returnFloor;
+    }
 }

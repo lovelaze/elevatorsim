@@ -11,5 +11,13 @@ public class Step {
         passengers = new ArrayList<Passenger>();
     }
 
+    public void addPassenger(Passenger passenger) {
+    	passengers.add(passenger);
+    }
+
+    public ArrayList<Passenger> getPassengers() {
+        return passengers;
+    }
+
 
 }

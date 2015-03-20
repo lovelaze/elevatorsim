@@ -21,47 +21,77 @@ public class TrafficPattern {
         this.currentPattern = currentPattern;
         this.totalPassengers = totalPassengers;
         this.building = building;
+        this.steps = new ArrayList<Step>();
+
+
+        switch (currentPattern) {
+            case UpPeak:
+                upPeak();
+                break;
+            case DownPeak:
+                downPeak();
+                break;
+            case SpecialFloor:
+                specialFloor();
+                break;
+            case Ordinary:
+                ordinary();
+                break;
+
+        }
     }
 
-    public void nextStep() {
-
+    public ArrayList<Call> nextStep() {
+        ArrayList<Call> calls = new ArrayList<Call>();
         if (steps.size() > 0) {
             Step step = steps.get(0);
-            steps.remove(0);
-            switch (currentPattern) {
-                case UpPeak:
-                    upPeak(step);
-                    break;
-                case DownPeak:
-                    downPeak(step);
-                    break;
-                case SpecialFloor:
-                    specialFloor(step);
-                    break;
-                case Ordinary:
-                    ordinary(step);
-                    break;
-
+            for (Passenger p : step.getPassengers()) {
+                calls.add(p.makeCall());
             }
+            System.out.println(step.getPassengers().size());
+            steps.remove(0);
         }
 
-
+        return calls;
     }
 
-    private void upPeak(Step step) {
+    private void upPeak() {
     	System.out.println("UPPEAK");
+        while (totalPassengers > 0) {
+            int spawnPeople = random.nextInt(100)+1;
+            Step step = new Step();
+            if(spawnPeople > 70) {
+                int numberOfPeople = random.nextInt(5)+1;
+                for(int i=0; i<numberOfPeople; i++) {
+                    Floor start, stop;
+                    int terminalFloor = random.nextInt(100)+1;
+                    if(terminalFloor > 20)
+                        start = building.getTerminalFloor();
+                    else{
+                        int startFloor = random.nextInt(building.getFloors().size())+1;
+                        start = building.getFloor(startFloor);
+                    }
+                    int stopFloor = random.nextInt(building.getFloors().size())+1;
+                    stop = building.getFloor(stopFloor);
+                    step.addPassenger(new Passenger(start, stop));
+                }
+                totalPassengers -= numberOfPeople;
+            }
+            steps.add(step);
+        }
+        System.out.println(steps.size());
     }
 
-    private void downPeak(Step step) {
-
+    private void downPeak() {
+        System.out.println("DOWNPEAK");
     }
 
-    private void specialFloor(Step step) {
-
+    private void specialFloor() {
+        System.out.println("SPECIALFLOOR");
     }
 
-    private void ordinary(Step step) {
-
+    private void ordinary() {
+        System.out.println("ORDINARY");
     }
 
 }

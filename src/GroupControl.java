@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -6,5 +7,7 @@ import java.util.List;
 public interface GroupControl {
 
 	public abstract Car assignElevator(List<Shaft> shafts);
+
+	public abstract void sendCalls(ArrayList<Call> calls);
 
 }

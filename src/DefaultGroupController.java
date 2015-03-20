@@ -1,9 +1,12 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Fredrik on 3/19/2015.
+ * Created by Bengan on 3/19/2015.
  */
 public class DefaultGroupController implements  GroupControl {
+
+
 
     @Override
     public Car assignElevator(List<Shaft> shafts) {
@@ -14,5 +17,10 @@ public class DefaultGroupController implements  GroupControl {
     		}
     	}
         return null;
+    }
+
+    @Override
+    public void sendCalls(ArrayList<Call> calls) {
+
     }
 }
