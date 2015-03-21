@@ -29,6 +29,10 @@ public class Car {
         return assignedCall;
     }
 
+    public boolean isMoving() {
+        return direction != Direction.Idle;
+    }
+
     public boolean isBusy() {
         return direction != Direction.Idle || assignedCall != null;
     }

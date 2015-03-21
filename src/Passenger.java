@@ -13,9 +13,9 @@ public class Passenger {
         this.destination = destination;
         call = null;
         if(start.getLevel() - destination.getLevel() > 0)
-            direction = Car.Direction.Up;
-        else if(start.getLevel() - destination.getLevel() < 0)
             direction = Car.Direction.Down;
+        else if(start.getLevel() - destination.getLevel() < 0)
+            direction = Car.Direction.Up;
     }
 
     public Call makeCall() {

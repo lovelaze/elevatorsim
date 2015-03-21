@@ -50,7 +50,6 @@ public class TrafficPattern {
                 calls.add(p.makeCall());
                 p.getStart().addPassenger(p);
             }
-            System.out.println(step.getPassengers().size());
             steps.remove(0);
         }
 
@@ -62,7 +61,7 @@ public class TrafficPattern {
     }
 
     private void upPeak() {
-    	System.out.println("UPPEAK");
+        System.out.println("UPPEAK");
         while (totalPassengers > 0) {
             int spawnPeople = random.nextInt(100)+1;
             Step step = new Step();
