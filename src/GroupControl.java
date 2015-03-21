@@ -10,10 +10,6 @@ public abstract class GroupControl {
     protected ArrayList<Call> newCalls = new ArrayList<Call>();
     protected ArrayList<Call> assignedCalls = new ArrayList<Call>();
 
-
-    protected Thread t;
-    private boolean running = true;
-
     public GroupControl() {
         building = new Building();
     }
@@ -26,28 +22,26 @@ public abstract class GroupControl {
 
     public abstract void controlElevators();
 
-    public synchronized void addCalls (ArrayList<Call> calls) {
-        this.newCalls.addAll(calls);
-        ElevatorEngine.R.totalCalls += calls.size();
+    public ArrayList<Call> getAssignedCalls() {
+        return assignedCalls;
     }
 
-    public synchronized int remainingCalls() {
+    public ArrayList<Call> getNewCalls() {
+        return newCalls;
+    }
+
+    public void addCalls (ArrayList<Call> calls) {
+        this.newCalls.addAll(calls);
+        ElevatorEngine.R.totalCalls += calls.size();
+
+    }
+
+    public int remainingCalls() {
         return newCalls.size() + assignedCalls.size();
     }
 
-    public void stopControlling() {
-    	running = false;
-    }
-
 	public void startControlling() {
-        t = new Thread() {
-            public void run() {
-                while (running) {
-                    controlElevators();
-                }
-            }
-        };
-        t.start();
+	    controlElevators();
     }
 
 }

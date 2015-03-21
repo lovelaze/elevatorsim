@@ -21,6 +21,18 @@ public class Floor {
         return terminalFloor;
     }
 
+    public ArrayList<Passenger> getPassengers() {
+        return passengers;
+    }
+
+    public void addPassenger(Passenger p) {
+        passengers.add(p);
+    }
+
+    public void removePassenger(Passenger p) {
+        passengers.remove(p);
+    }
+
     public Floor(int level) {
         this (false, false, level);
     }

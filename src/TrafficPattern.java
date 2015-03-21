@@ -48,6 +48,7 @@ public class TrafficPattern {
             Step step = steps.get(0);
             for (Passenger p : step.getPassengers()) {
                 calls.add(p.makeCall());
+                p.getStart().addPassenger(p);
             }
             System.out.println(step.getPassengers().size());
             steps.remove(0);
@@ -70,13 +71,15 @@ public class TrafficPattern {
                 for(int i=0; i<numberOfPeople; i++) {
                     Floor start, stop;
                     int terminalFloor = random.nextInt(100)+1;
+                    int startFloor = building.getTerminalFloor().getLevel();
                     if(terminalFloor > 20)
                         start = building.getTerminalFloor();
                     else{
-                        int startFloor = random.nextInt(building.getFloors().size())+1;
+                        startFloor = random.nextInt(building.getFloors().size());
                         start = building.getFloor(startFloor);
                     }
-                    int stopFloor = random.nextInt(building.getFloors().size())+1;
+                    int stopFloor = random.nextInt(building.getFloors().size());
+                    while (stopFloor == startFloor) {stopFloor = random.nextInt(building.getFloors().size());}
                     stop = building.getFloor(stopFloor);
                     step.addPassenger(new Passenger(start, stop));
                 }

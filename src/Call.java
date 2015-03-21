@@ -12,10 +12,17 @@ public class Call {
     private Car assignee;
 
     private boolean finished;
+    private Passenger caller;
 
-    public Call(Floor from, Floor to) {
+    public Passenger getCaller() {
+        return caller;
+    }
+
+    public Call(Floor from, Floor to, Passenger caller) {
         this.from = from;
+
         this.to = to;
+        this.caller = caller;
         timeRequest = System.currentTimeMillis();
     }
 

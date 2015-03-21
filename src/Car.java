@@ -11,22 +11,33 @@ public class Car {
 	}
 
     private Direction direction;
-    private Floor location;
+    private Floor location, destination;
     private ArrayList<Passenger> passengers;
-    private Call assigendCall;
+    private Call assignedCall;
     private int progress = 0;
+
 
 
     public Car(Floor location) {
         direction = Direction.Idle;
         this.location = location;
+        destination = location;
+        passengers = new ArrayList<Passenger>();
+    }
+
+    public Call getAssignedCall() {
+        return assignedCall;
     }
 
     public boolean isBusy() {
-        return direction != Direction.Idle || assigendCall != null;
+        return direction != Direction.Idle || assignedCall != null;
     }
 
-    public void move(Floor destination, Building building){
+    public ArrayList<Passenger> getPassengers() {
+        return passengers;
+    }
+
+    public void move(Building building){
 
         if(destination.getLevel() < location.getLevel())
             direction = Direction.Down;
@@ -40,6 +51,7 @@ public class Car {
                 break;
             case Left:
                 break;
+
             case Right:
                 break;
             case Up:
@@ -52,12 +64,20 @@ public class Car {
 
         if (progress >= Parameters.travelTicks) {
             location = building.getAboveFloor(location);
+            System.out.println("level = "+ getLocation().getLevel());
             progress = 0;
         } else if (progress <= -Parameters.travelTicks) {
             location = building.getUnderFloor(location);
+            System.out.println("level = "+ getLocation().getLevel());
             progress = 0;
         }
 
+    }
+
+    public void stop() {
+        direction = Car.Direction.Idle;
+        assignedCall = null;
+        destination = location;
     }
 
     public int getProgress() {
@@ -73,11 +93,17 @@ public class Car {
     }
 
     public void assignTo(Call call) {
-    	assigendCall = call;
+        call.setAssignee(this);
+        assignedCall = call;
+        destination = call.getFrom();
     }
 
     public void addPassenger(Passenger passenger) {
         passengers.add(passenger);
+    }
+
+    public void setDestination(Floor destination) {
+        this.destination = destination;
     }
 
     public void removePassenger(Passenger passenger) {
