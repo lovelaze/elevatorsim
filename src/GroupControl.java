@@ -33,7 +33,6 @@ public abstract class GroupControl {
     public void addCalls (ArrayList<Call> calls) {
         this.newCalls.addAll(calls);
         ElevatorEngine.R.totalCalls += calls.size();
-
     }
 
     public int remainingCalls() {

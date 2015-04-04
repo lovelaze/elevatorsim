@@ -38,7 +38,7 @@ public class ElevatorEngine {
             groupController.addCalls(currentCalls);
             currentCalls.clear();
 
-        	System.out.println(pattern.remainingSteps() + ", "  + groupController.getNewCalls().size()+ ", " + groupController.getAssignedCalls().size());
+        	System.out.println("Remaining steps: " + pattern.remainingSteps() + ", New calls: "  + groupController.getNewCalls().size()+ ", Assigned Calls: " + groupController.getAssignedCalls().size());
 
             stepCounter = 0;
         }

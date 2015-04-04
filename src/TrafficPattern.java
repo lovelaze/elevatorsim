@@ -67,6 +67,7 @@ public class TrafficPattern {
             Step step = new Step();
             if(spawnPeople > 70) {
                 int numberOfPeople = random.nextInt(5)+1;
+                while (totalPassengers - numberOfPeople < 0) {numberOfPeople = random.nextInt(5)+1;}
                 for(int i=0; i<numberOfPeople; i++) {
                     Floor start, stop;
                     int terminalFloor = random.nextInt(100)+1;
