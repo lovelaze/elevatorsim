@@ -18,8 +18,8 @@ public class Passenger {
             direction = Car.Direction.Up;
     }
 
-    public Call makeCall() {
-    	return new Call(start, destination, this);
+    public Call makeCall(int step) {
+    	return new Call(start, destination, step, this);
 
     }
 

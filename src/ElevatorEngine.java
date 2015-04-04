@@ -17,7 +17,7 @@ public class ElevatorEngine {
 
     private ArrayList<Call> currentCalls;
 
-    private int stepLength = 100, stepCounter = 0;
+    private int stepLength = 100, stepCounter = 0, time  = 0;
 
     public ElevatorEngine(Building building) {
         this.building = building;
@@ -28,13 +28,13 @@ public class ElevatorEngine {
 
     public boolean isRunning() {
         stepping();
-        groupController.startControlling();
+        groupController.startControlling(time);
         return pattern.remainingSteps() <= 0 && groupController.remainingCalls() <= 0;
     }
 
     public void stepping() {
         if(stepCounter>=stepLength){
-            currentCalls = pattern.nextStep();
+            currentCalls = pattern.nextStep(time);
             groupController.addCalls(currentCalls);
             currentCalls.clear();
 
@@ -44,5 +44,6 @@ public class ElevatorEngine {
         }
 
         stepCounter++;
+        time++;
     }
 }

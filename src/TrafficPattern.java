@@ -42,12 +42,12 @@ public class TrafficPattern {
         }
     }
 
-    public ArrayList<Call> nextStep() {
+    public ArrayList<Call> nextStep(int time) {
         ArrayList<Call> calls = new ArrayList<Call>();
         if (steps.size() > 0) {
             Step step = steps.get(0);
             for (Passenger p : step.getPassengers()) {
-                calls.add(p.makeCall());
+                calls.add(p.makeCall(time));
                 p.getStart().addPassenger(p);
             }
             steps.remove(0);

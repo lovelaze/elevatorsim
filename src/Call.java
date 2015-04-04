@@ -5,12 +5,13 @@ public class Call {
 
     private Floor from;
     private Floor to;
-    private long timeRequest;
-    private long timePickedUp;
-    private long timeArrived;
+    private int timeRequest;
+    private int timePickedUp;
+    private int timeArrived;
 
     private Car assignee;
 
+    private boolean isPickedUp;
     private boolean finished;
     private Passenger caller;
 
@@ -18,17 +19,19 @@ public class Call {
         return caller;
     }
 
-    public Call(Floor from, Floor to, Passenger caller) {
+    public Call(Floor from, Floor to, int time, Passenger caller) {
         this.from = from;
 
         this.to = to;
         this.caller = caller;
-        timeRequest = System.currentTimeMillis();
+        timeRequest = time;
+        isPickedUp = false;
+        System.out.println("New call at time: " + time);
     }
 
     public void setFinished() {
         finished = true;
-        timeArrived = System.currentTimeMillis();
+        timeArrived = 0; //TODO: Measure properly
     }
 
     public Floor getFrom() {
@@ -39,24 +42,29 @@ public class Call {
         return to;
     }
 
-    public Floor passengerPickedUp() {
-        timePickedUp = System.currentTimeMillis();
+    public Floor passengerPickedUp(int time) {
+        timePickedUp = time; //TODO: Measure properly
+        isPickedUp = true;
         return to;
     }
 
-    public long getTimeRequest() {
+    public boolean isPickedUp() {
+        return isPickedUp;
+    }
+
+    public int getTimeRequest() {
         return timeRequest;
     }
 
-    public long getTimeArrived() {
+    public int getTimeArrived() {
         return timeArrived;
     }
 
-    public long waitingTime() {
+    public int waitingTime() {
         return timePickedUp-timeRequest;
     }
 
-    public long journeyTime()  {
+    public int journeyTime()  {
         return timePickedUp-timeRequest;
     }
 

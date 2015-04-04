@@ -21,7 +21,7 @@ public class DefaultGroupController extends GroupControl {
     }
 
     @Override
-    public void controlElevators() {
+    public void controlElevators(int time) {
         Call call;
         Iterator<Call> it = newCalls.iterator();
 
@@ -45,7 +45,7 @@ public class DefaultGroupController extends GroupControl {
             car = call.getAssignee();
 
             if (!car.isMoving()) {
-                if (car.getLocation().getLevel() == call.getTo().getLevel()) {
+                if (car.getLocation().getLevel() == call.getTo().getLevel() && call.isPickedUp()) {
                     // dropa snuber
                     System.out.println("Removed Passenger");
                     dropPrivetOutOfCar(car, call);
@@ -53,17 +53,17 @@ public class DefaultGroupController extends GroupControl {
                     it.remove();
 
                     car.stop();
-                } if (car.getLocation().getLevel() == call.getFrom().getLevel()) {
+                } if (car.getLocation().getLevel() == call.getFrom().getLevel() && !call.isPickedUp()) {
 
                     // pick up
-                    putPeopleInCar(car, call);
+                    putPeopleInCar(car, call, time);
                 }
             }
         }
 
     }
 
-    private void putPeopleInCar(Car car, Call call) {
+    private void putPeopleInCar(Car car, Call call, int time) {
 
         /*Iterator<Passenger> it = car.getLocation().getPassengers().iterator();
         Passenger p;
@@ -81,8 +81,8 @@ public class DefaultGroupController extends GroupControl {
         if (getDirection(car.getAssignedCall().getFrom(), car.getAssignedCall().getTo()) == p.getDirection()) {
             car.addPassenger(p);
             car.getLocation().getPassengers().remove(p);
-            car.setDestination(car.getAssignedCall().getTo());
-            System.out.println("Added passenger: from = " + p.getStart().getLevel() + ", to = " + p.getDestination().getLevel());
+            car.setDestination(car.getAssignedCall().passengerPickedUp(time));
+            System.out.println("Added passenger: from = " + p.getStart().getLevel() + ", to = " + p.getDestination().getLevel() + ", time: " + time);
         }
     }
 
@@ -100,6 +100,8 @@ public class DefaultGroupController extends GroupControl {
 
     private void dropPrivetOutOfCar(Car car, Call call) {
         car.removePassenger(call.getCaller());
+        System.out.println(call.waitingTime());
+        ElevatorEngine.R.totalWaitingTime += call.waitingTime();
     }
 
 }

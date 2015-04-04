@@ -5,9 +5,9 @@ public class SimulationResult {
 
     public int totalCalls;
     public int totalPassengers;
-    public long totalTravelTime;
-    public long totalWaitingTime;
-    public long averageRoundTripTime;
+    public int totalTravelTime;
+    public int totalWaitingTime;
+    public int averageRoundTripTime;
 
     public void printResult() {
         System.out.println("totalCalls = " + totalCalls);
@@ -15,7 +15,7 @@ public class SimulationResult {
         System.out.println("totalTravelTime = " + totalTravelTime);
         System.out.println("totalWaitingTime = " + totalWaitingTime);
         System.out.println("averageRoundTripTime = " + averageRoundTripTime);
-
+        System.out.println("averageWaitingTime = " + (totalWaitingTime/totalPassengers));
     }
 
 }
