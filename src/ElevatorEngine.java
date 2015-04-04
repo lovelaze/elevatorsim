@@ -18,12 +18,13 @@ public class ElevatorEngine {
     private ArrayList<Call> currentCalls;
 
     private int stepLength = 100, stepCounter = 0, time  = 0;
+    private int totalPassengers = 10000;
 
     public ElevatorEngine(Building building) {
         this.building = building;
         groupController = new DefaultGroupController(building);
         R = new SimulationResult();
-        pattern = new TrafficPattern( TrafficPattern.CallPattern.UpPeak, building, 1000);
+        pattern = new TrafficPattern( TrafficPattern.CallPattern.UpPeak, building, totalPassengers);
     }
 
     public boolean isRunning() {
