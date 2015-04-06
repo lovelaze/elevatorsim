@@ -7,6 +7,7 @@ public class NearestCar extends GroupControl {
 	public NearestCar(Building building) {
         super(building);
         N = building.getNumberOfFloors();
+        FS = 1;
     }
 
     @Override
@@ -17,37 +18,40 @@ public class NearestCar extends GroupControl {
 
     public Car getBestElevator(Call call) {
     	List<Car> cars = building.getCars();
-    	Car selectedCar;
+    	Car selectedCar = cars.get(0);
     	for (int i=0; i<cars.size(); i++) {
     		d = Math.abs(cars.get(i).getLocation().getLevel() - call.getTo().getLevel());
     		Car.Direction direction = cars.get(i).getDirection();
-    		Car.Direction elevatorCallDirection = getDirection(cars.get(i).getLocation(), call.getTo());
+    		Car.Direction elevatorCallDirection = getDirection(cars.get(i).getLocation(), call.getFrom());
     		Car.Direction callDirection = getDirection(call.getFrom(), call.getTo());
+    		int newFS = 1;
     		switch(direction) {
     			case Idle:
-    				FS = N + 1 - d;
+    				newFS = N + 1 - d;
     				break;
     			case Down:
     				if (elevatorCallDirection == Car.Direction.Up) {
-    					FS = 1;
+    					newFS = 1;
     				} else if (elevatorCallDirection == Car.Direction.Down && callDirection == Car.Direction.Up) {
-    					FS = N + 1 - d;
+    					newFS = N + 1 - d;
     				} else if (elevatorCallDirection == Car.Direction.Down && callDirection == Car.Direction.Down) {
-    					FS = N + 1 - (d - 1);
+    					newFS = N + 1 - (d - 1);
     				}
     				break;
     			case Up:
     				if (elevatorCallDirection == Car.Direction.Down) {
-    					FS = 1;
+    					newFS = 1;
     				} else if (elevatorCallDirection == Car.Direction.Up && callDirection == Car.Direction.Down) {
-    					FS = N + 1 - d;
+    					newFS = N + 1 - d;
     				} else if (elevatorCallDirection == Car.Direction.Up && callDirection == Car.Direction.Up) {
-    					FS = N + 1 - (d - 1);
+    					newFS = N + 1 - (d - 1);
     				}
     				break;
     		}
+    		if (newFS > FS)
+    			selectedCar = cars.get(i);
     	}
-        return building.getCars().get(0);
+        return selectedCar;
     }
 
     @Override
