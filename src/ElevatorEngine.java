@@ -21,8 +21,12 @@ public class ElevatorEngine {
     private int totalPassengers = 10000;
 
     public ElevatorEngine(Building building) {
+        this(building, new DefaultGroupController(building));
+    } 
+
+    public ElevatorEngine(Building building, GroupControl controller) {
         this.building = building;
-        groupController = new DefaultGroupController(building);
+        groupController = controller;
         R = new SimulationResult();
         pattern = new TrafficPattern( TrafficPattern.CallPattern.UpPeak, building, totalPassengers);
     }

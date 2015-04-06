@@ -18,7 +18,7 @@ public final class BuildingFactory {
 
         for(int i=0; i<2; i++) {
         	Shaft shaft = new Shaft();
-        	shaft.addCar(new Car(building.getTerminalFloor()));
+        	shaft.addCar(new Car(building.getTerminalFloor(), i+1));
         	building.addShaft(shaft);
         }
 

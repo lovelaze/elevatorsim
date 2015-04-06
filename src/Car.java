@@ -15,14 +15,15 @@ public class Car {
     private ArrayList<Passenger> passengers;
     private Call assignedCall;
     private int progress = 0;
+    private int number;
 
 
-
-    public Car(Floor location) {
+    public Car(Floor location, int number) {
         direction = Direction.Idle;
         this.location = location;
         destination = location;
         passengers = new ArrayList<Passenger>();
+        this.number = number;
     }
 
     public Call getAssignedCall() {
@@ -68,14 +69,18 @@ public class Car {
 
         if (progress >= Parameters.travelTicks) {
             location = building.getAboveFloor(location);
-            System.out.println("level = "+ getLocation().getLevel());
+            System.out.println("Elevator " + number + " now at level = "+ getLocation().getLevel());
             progress = 0;
         } else if (progress <= -Parameters.travelTicks) {
             location = building.getUnderFloor(location);
-            System.out.println("level = "+ getLocation().getLevel());
+            System.out.println("Elevator " + number + " now at level = "+ getLocation().getLevel());
             progress = 0;
         }
 
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public void stop() {

@@ -16,6 +16,9 @@ public class NearestCar extends GroupControl {
         return building.getCars().get(0);
     }
 
+    /**
+	* Calculates the most appropriate elevator to assign to a call.
+    */
     public Car getBestElevator(Call call) {
     	List<Car> cars = building.getCars();
     	Car selectedCar = cars.get(0);
@@ -48,8 +51,10 @@ public class NearestCar extends GroupControl {
     				}
     				break;
     		}
-    		if (newFS > FS)
+    		if (newFS > FS) {
     			selectedCar = cars.get(i);
+    			FS = newFS;
+    		}
     	}
         return selectedCar;
     }
@@ -57,6 +62,21 @@ public class NearestCar extends GroupControl {
     @Override
     public void controlElevators(int time) {
         //TODO: Control ze elevatorz
+
+    	Call call;
+        Iterator<Call> it = newCalls.iterator();
+
+        for(Car car : building.getCars()) {
+        	car.move(building);
+        }
+
+        while (it.hasNext()) {
+        	call = it.next();
+        	Car bestCar = getBestElevator(call);
+        	bestCar.assignTo(call);
+        	assignedCalls.add(call);
+        	it.remove();
+        }
 
     }
 
