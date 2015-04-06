@@ -79,7 +79,7 @@ public class DefaultGroupController extends GroupControl {
 
         Passenger p = call.getCaller();
         if (getDirection(car.getAssignedCall().getFrom(), car.getAssignedCall().getTo()) == p.getDirection()) {
-            car.addPassenger(p);
+            car.addPassenger(p, time);
             car.getLocation().getPassengers().remove(p);
             car.setDestination(car.getAssignedCall().passengerPickedUp(time));
             System.out.println("Added passenger: from = " + p.getStart().getLevel() + ", to = " + p.getDestination().getLevel() + ", time: " + time);

@@ -89,6 +89,8 @@ public class Car {
         direction = Car.Direction.Idle;
         assignedCall = null;
         destination = location;
+        passengers.clear();
+        waitingCalls.clear();
     }
 
     public int getProgress() {
@@ -109,8 +111,8 @@ public class Car {
             assignedCall = call;
             destination = call.getFrom();   
         } else {
-            int newDistance = Math.abs(location.getLevel() - call.getTo().getLevel());
-            int oldDistance = Math.abs(location.getLevel() - assignedCall.getTo().getLevel());
+            int newDistance = call.isPickedUp() ? Math.abs(location.getLevel() - call.getTo().getLevel()) : Math.abs(location.getLevel() - call.getFrom().getLevel());
+            int oldDistance = assignedCall.isPickedUp() ? Math.abs(location.getLevel() - assignedCall.getTo().getLevel()) : Math.abs(location.getLevel() - assignedCall.getFrom().getLevel());
             if(newDistance < oldDistance) {
                 waitingCalls.add(assignedCall);
                 assignedCall = call;
@@ -122,8 +124,9 @@ public class Car {
         System.out.println("Elevator " + number + " has " + waitingCalls.size() + " waiting calls");
     }
 
-    public void addPassenger(Passenger passenger) {
+    public void addPassenger(Passenger passenger, int time) {
         passengers.add(passenger);
+        passenger.getCurrentCall().passengerPickedUp(time);
         destination = assignedCall.getTo();
     }
 
@@ -148,8 +151,8 @@ public class Car {
                 }
             }
             waitingCalls.remove(assignedCall);
-            destination = assignedCall.getTo();
-        } else {
+            destination = assignedCall.isPickedUp() ? assignedCall.getTo() : assignedCall.getFrom();
+        } else if(waitingCalls.isEmpty()){
             System.out.println("STOP");
             stop();
         }

@@ -85,7 +85,7 @@ public class NearestCar extends GroupControl {
             if (!car.isMoving()) {
                 if (car.getLocation().getLevel() == call.getTo().getLevel() && call.isPickedUp()) {
                     // dropa snuber
-                    System.out.println("Removed Passenger from: " + call.getFrom().getLevel() + " to: " + call.getTo().getLevel());
+                    System.out.println("Removed Passenger from: " + call.getFrom().getLevel() + " to: " + call.getTo().getLevel() + " from elevator: " + car.getNumber());
                     dropPrivetOutOfCar(car, call);
 
                     it.remove();
@@ -100,10 +100,9 @@ public class NearestCar extends GroupControl {
     private void putPeopleInCar(Car car, Call call, int time) {
 		//TODO: Put people in car
 		Passenger p = call.getCaller();
-    	car.addPassenger(p);
+    	car.addPassenger(p, time);
     	car.getLocation().getPassengers().remove(p);
-		call.passengerPickedUp(time);
-		System.out.println("Added passenger: from = " + p.getStart().getLevel() + ", to = " + p.getDestination().getLevel() + ", time: " + time);
+		System.out.println("Added passenger: from = " + p.getStart().getLevel() + ", to = " + p.getDestination().getLevel() + ", time: " + time + " in elevator: " + car.getNumber());
     }
 
     private Car.Direction getDirection(Floor from, Floor to) {

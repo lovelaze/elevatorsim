@@ -19,8 +19,8 @@ public class Passenger {
     }
 
     public Call makeCall(int step) {
-    	return new Call(start, destination, step, this);
-
+    	call = new Call(start, destination, step, this);
+        return call;
     }
 
     public Car.Direction getDirection() {
