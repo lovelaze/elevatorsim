@@ -124,6 +124,7 @@ public class Car {
 
     public void addPassenger(Passenger passenger) {
         passengers.add(passenger);
+        destination = assignedCall.getTo();
     }
 
     public void setDestination(Floor destination) {
@@ -139,15 +140,20 @@ public class Car {
                 if(assignedCall == null) {
                     assignedCall = call;
                 } else {
-                    int newDistance = Math.abs(location.getLevel() - call.getTo().getLevel());
-                    int oldDistance = Math.abs(location.getLevel() - assignedCall.getTo().getLevel());
+                    int newDistance = call.isPickedUp() ? Math.abs(location.getLevel() - call.getTo().getLevel()) : Math.abs(location.getLevel() - call.getFrom().getLevel());
+                    int oldDistance = assignedCall.isPickedUp() ? Math.abs(location.getLevel() - assignedCall.getTo().getLevel()) : Math.abs(location.getLevel() - assignedCall.getFrom().getLevel());
                     if (newDistance < oldDistance) {
                         assignedCall = call;
                     }
                 }
             }
             waitingCalls.remove(assignedCall);
+            destination = assignedCall.getTo();
+        } else {
+            System.out.println("STOP");
+            stop();
         }
+
     }
 
     public void emptyCar() {

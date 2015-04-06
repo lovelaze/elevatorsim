@@ -18,7 +18,7 @@ public class ElevatorEngine {
     private ArrayList<Call> currentCalls;
 
     private int stepLength = 100, stepCounter = 0, time  = 0;
-    private int totalPassengers = 10000;
+    private int totalPassengers = 100;
 
     public ElevatorEngine(Building building) {
         this(building, new DefaultGroupController(building));
