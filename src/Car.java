@@ -16,6 +16,7 @@ public class Car {
     private Call assignedCall;
     private int progress = 0;
     private int number;
+    private ArrayList<Call> waitingCalls;
 
 
     public Car(Floor location, int number) {
@@ -23,6 +24,7 @@ public class Car {
         this.location = location;
         destination = location;
         passengers = new ArrayList<Passenger>();
+        waitingCalls = new ArrayList<Call>();
         this.number = number;
     }
 
@@ -80,7 +82,7 @@ public class Car {
     }
 
     public int getNumber() {
-        return number;
+        return number;  
     }
 
     public void stop() {
@@ -103,8 +105,21 @@ public class Car {
 
     public void assignTo(Call call) {
         call.setAssignee(this);
-        assignedCall = call;
-        destination = call.getFrom();
+        if(assignedCall == null){
+            assignedCall = call;
+            destination = call.getFrom();   
+        } else {
+            int newDistance = Math.abs(location.getLevel() - call.getTo().getLevel());
+            int oldDistance = Math.abs(location.getLevel() - assignedCall.getTo().getLevel());
+            if(newDistance < oldDistance) {
+                waitingCalls.add(assignedCall);
+                assignedCall = call;
+                destination = call.getFrom();
+            } else {
+                waitingCalls.add(call);
+            }
+        }
+        System.out.println("Elevator " + number + " has " + waitingCalls.size() + " waiting calls");
     }
 
     public void addPassenger(Passenger passenger) {
@@ -117,6 +132,22 @@ public class Car {
 
     public void removePassenger(Passenger passenger) {
         passengers.remove(passenger);
+        assignedCall = null;
+
+        if (!waitingCalls.isEmpty()) {
+            for(Call call : waitingCalls) {
+                if(assignedCall == null) {
+                    assignedCall = call;
+                } else {
+                    int newDistance = Math.abs(location.getLevel() - call.getTo().getLevel());
+                    int oldDistance = Math.abs(location.getLevel() - assignedCall.getTo().getLevel());
+                    if (newDistance < oldDistance) {
+                        assignedCall = call;
+                    }
+                }
+            }
+            waitingCalls.remove(assignedCall);
+        }
     }
 
     public void emptyCar() {
