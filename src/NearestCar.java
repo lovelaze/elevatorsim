@@ -51,6 +51,11 @@ public class NearestCar extends GroupControl {
     		if (newFS > FS) {
     			selectedCar = cars.get(i);
     			FS = newFS;
+    		} if (newFS == FS) {
+    			int r = new Random().nextInt(2);
+    			if(r == 1) {
+    				selectedCar = cars.get(i);
+    			}
     		}
     	}
         return selectedCar;
