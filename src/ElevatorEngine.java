@@ -33,7 +33,7 @@ public class ElevatorEngine {
 
     public boolean isRunning() {
         stepping();
-        groupController.startControlling(time);
+        groupController.startControlling(time, pattern.getCurrentPattern());
         return pattern.remainingSteps() <= 0 && groupController.remainingCalls() <= 0;
     }
 

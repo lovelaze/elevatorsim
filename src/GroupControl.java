@@ -20,7 +20,7 @@ public abstract class GroupControl {
 
 	public abstract Car assignElevator(List<Shaft> shafts);
 
-    public abstract void controlElevators(int time);
+    public abstract void controlElevators(int time, TrafficPattern.CallPattern currentPattern);
 
     public ArrayList<Call> getAssignedCalls() {
         return assignedCalls;
@@ -39,8 +39,8 @@ public abstract class GroupControl {
         return newCalls.size() + assignedCalls.size();
     }
 
-	public void startControlling(int time) {
-	    controlElevators(time);
+	public void startControlling(int time, TrafficPattern.CallPattern currentPattern) {
+	    controlElevators(time, currentPattern);
     }
 
 }

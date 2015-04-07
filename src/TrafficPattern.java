@@ -42,6 +42,10 @@ public class TrafficPattern {
         }
     }
 
+    public CallPattern getCurrentPattern() {
+        return currentPattern;
+    }
+
     public ArrayList<Call> nextStep(int time) {
         ArrayList<Call> calls = new ArrayList<Call>();
         if (steps.size() > 0) {

@@ -21,7 +21,7 @@ public class DefaultGroupController extends GroupControl {
     }
 
     @Override
-    public void controlElevators(int time) {
+    public void controlElevators(int time, TrafficPattern.CallPattern currentPattern) {
         Call call;
         Iterator<Call> it = newCalls.iterator();
 

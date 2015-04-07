@@ -62,14 +62,14 @@ public class NearestCar extends GroupControl {
     }
 
     @Override
-    public void controlElevators(int time) {
+    public void controlElevators(int time, TrafficPattern.CallPattern currentPattern) {
         //TODO: Control ze elevatorz
 
     	Call call;
         Iterator<Call> it = newCalls.iterator();
 
         for(Car car : building.getCars()) {
-            if (!car.isBusy()) {
+            if (!car.isBusy() && currentPattern == TrafficPattern.CallPattern.UpPeak) {
                 car.setDestination(building.getTerminalFloor());
             }
         	car.move(building);
