@@ -18,6 +18,7 @@ public class Car {
     private int number;
     private ArrayList<Call> waitingCalls;
 
+    private int servedCalls = 0;
 
     public Car(Floor location, int number) {
         direction = Direction.Idle;
@@ -34,6 +35,10 @@ public class Car {
 
     public boolean isMoving() {
         return direction != Direction.Idle;
+    }
+
+    public String getResult() {
+        return "Elevator " + number + " served " + servedCalls + " calls.";
     }
 
     public boolean isBusy() {
@@ -105,6 +110,7 @@ public class Car {
     }
 
     public void assignTo(Call call) {
+        servedCalls++;
         call.setAssignee(this);
         if(assignedCall == null){
             assignedCall = call;

@@ -17,6 +17,6 @@ public class Main {
         
 
         while (!engine.isRunning()) {}
-        ElevatorEngine.R.printResult();
+        ElevatorEngine.R.printResult(building);
     }
 }

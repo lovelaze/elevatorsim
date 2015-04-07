@@ -9,13 +9,16 @@ public class SimulationResult {
     public int totalWaitingTime;
     public int averageRoundTripTime;
 
-    public void printResult() {
+    public void printResult(Building building) {
         System.out.println("totalCalls = " + totalCalls);
         System.out.println("totalPassengers = " + totalPassengers);
         System.out.println("totalTravelTime = " + totalTravelTime);
         System.out.println("totalWaitingTime = " + totalWaitingTime);
         System.out.println("averageRoundTripTime = " + averageRoundTripTime);
         System.out.println("averageWaitingTime = " + (totalWaitingTime/totalPassengers));
+        for(Car car : building.getCars()) {
+            System.out.println(car.getResult());
+        }
     }
 
 }

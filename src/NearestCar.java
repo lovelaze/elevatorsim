@@ -69,6 +69,9 @@ public class NearestCar extends GroupControl {
         Iterator<Call> it = newCalls.iterator();
 
         for(Car car : building.getCars()) {
+            if (!car.isBusy()) {
+                car.setDestination(building.getTerminalFloor());
+            }
         	car.move(building);
         }
 
