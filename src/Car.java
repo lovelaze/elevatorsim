@@ -143,6 +143,12 @@ public class Car {
 
     public void setDestination(Floor destination) {
         this.destination = destination;
+        if(destination.getLevel() < location.getLevel())
+            direction = Direction.Down;
+        else if(destination.getLevel() > location.getLevel())
+            direction = Direction.Up;
+        else if(destination.getLevel() == location.getLevel())
+            direction = Direction.Idle;
     }
 
     public void removePassenger(Passenger passenger) {
