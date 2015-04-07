@@ -17,9 +17,15 @@ public class SimulationResult {
     public int averageRoundTripTime;
 
     private DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
+    private boolean chart;
+
+    public SimulationResult(boolean chart) {
+        this.chart = chart;
+    }
 
     public void addValue(int waitingPassengers, int tick) {
-        line_chart_dataset.addValue( waitingPassengers , "passengers" , "" + tick );
+        if(chart)
+            line_chart_dataset.addValue( waitingPassengers , "passengers" , "" + tick );
     }
 
     public void printResult(Building building) throws IOException{
@@ -33,16 +39,20 @@ public class SimulationResult {
             System.out.println(car.getResult());
         }
 
-        JFreeChart lineChartObject = ChartFactory.createLineChart(
-         "Waiting calls every tick","Tick",
-         "Waiting calls",
-         line_chart_dataset,PlotOrientation.VERTICAL,
-         true,true,false);
+        if(chart) {
 
-        int width = 640; /* Width of the image */
-        int height = 480; /* Height of the image */ 
-        File lineChart = new File( "fisk.jpeg" ); 
-        ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
+            JFreeChart lineChartObject = ChartFactory.createLineChart(
+             "Waiting calls every tick","Tick",
+             "Waiting calls",
+             line_chart_dataset,PlotOrientation.VERTICAL,
+             true,true,false);
+
+            int width = 640; /* Width of the image */
+            int height = 480; /* Height of the image */ 
+            File lineChart = new File( "fisk.jpeg" ); 
+            ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
+
+        }
 
     }
 

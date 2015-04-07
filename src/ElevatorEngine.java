@@ -22,14 +22,14 @@ public class ElevatorEngine {
     private int stepLength = 50, stepCounter = 0, time  = 0;
     private int totalPassengers = 1000;
 
-    public ElevatorEngine(Building building) {
-        this(building, new DefaultGroupController(building));
+    public ElevatorEngine(Building building, boolean chart) {
+        this(building, chart, new DefaultGroupController(building));
     } 
 
-    public ElevatorEngine(Building building, GroupControl controller) {
+    public ElevatorEngine(Building building, boolean chart, GroupControl controller) {
         this.building = building;
         groupController = controller;
-        R = new SimulationResult();
+        R = new SimulationResult(chart);
         pattern = new TrafficPattern( TrafficPattern.CallPattern.UpPeak, building, totalPassengers);
         allSteps = pattern.remainingSteps();
     }
@@ -48,7 +48,7 @@ public class ElevatorEngine {
             currentCalls.clear();
 
         	Log.log("Remaining steps: " + pattern.remainingSteps() + ", New calls: "  + groupController.getNewCalls().size()+ ", Assigned Calls: " + groupController.getAssignedCalls().size());
-            System.out.println(step + "/" + allSteps);
+            Log.chartLog(step + "/" + allSteps);
             stepCounter = 0;
         }
 
