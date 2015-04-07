@@ -45,7 +45,6 @@ public class Car {
     }
 
     public void move(Building building){
-
         if(destination.getLevel() < location.getLevel())
             direction = Direction.Down;
         else if(destination.getLevel() > location.getLevel())
@@ -109,6 +108,12 @@ public class Car {
         call.setAssignee(this);
         if(assignedCall == null){
             assignedCall = call;
+        } else {
+            waitingCalls.add(call);
+        }
+        calculateDestination();
+        /*if(assignedCall == null){
+            assignedCall = call;
             destination = call.getFrom();   
         } else {
             int newDistance = call.isPickedUp() ? Math.abs(location.getLevel() - call.getTo().getLevel()) : Math.abs(location.getLevel() - call.getFrom().getLevel());
@@ -120,14 +125,14 @@ public class Car {
             } else {
                 waitingCalls.add(call);
             }
-        }
+        }*/
         System.out.println("Elevator " + number + " has " + waitingCalls.size() + " waiting calls");
     }
 
     public void addPassenger(Passenger passenger, int time) {
         passengers.add(passenger);
         passenger.getCurrentCall().passengerPickedUp(time);
-        destination = assignedCall.getTo();
+        calculateDestination();
     }
 
     public void setDestination(Floor destination) {
@@ -136,8 +141,17 @@ public class Car {
 
     public void removePassenger(Passenger passenger) {
         passengers.remove(passenger);
+        waitingCalls.add(assignedCall);
         assignedCall = null;
+        waitingCalls.remove(passenger.getCurrentCall());
+        calculateDestination();
+    }
 
+    public void calculateDestination() {
+        if (assignedCall != null) {
+            waitingCalls.add(assignedCall);
+            assignedCall = null;
+        }
         if (!waitingCalls.isEmpty()) {
             for(Call call : waitingCalls) {
                 if(assignedCall == null) {
@@ -153,10 +167,9 @@ public class Car {
             waitingCalls.remove(assignedCall);
             destination = assignedCall.isPickedUp() ? assignedCall.getTo() : assignedCall.getFrom();
         } else if(waitingCalls.isEmpty()){
-            System.out.println("STOP");
+            //System.out.println("STOP");
             stop();
         }
-
     }
 
     public void emptyCar() {

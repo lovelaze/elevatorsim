@@ -79,4 +79,8 @@ public class Call {
     public boolean isFinished() {
         return finished;
     }
+
+    public String toString() {
+        return "from: " + from.getLevel() + ", to: " + to.getLevel();
+    }
 }
