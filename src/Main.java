@@ -4,7 +4,7 @@ public class Main {
 
         Building building = BuildingFactory.defaultBuilding();
     	ElevatorEngine engine = null;
-    	if (args[0] == null || args[0].equals("default")) {
+    	if (args.length >= 1 && (args[0] == null || args[0].equals("default"))) {
     		System.out.println("Running default controller");
     		engine = new ElevatorEngine(building);
     	} else if (args[0].toUpperCase().equals("NC") ) {
@@ -15,7 +15,7 @@ public class Main {
     		engine = new ElevatorEngine(building);
     	}
 
-        if(args.length > 2 && args[1].equals("true")) {
+        if(args.length >= 2 && args[1].toUpperCase().equals("TRUE")) {
             Log.startLogging();
         }
         
