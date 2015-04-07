@@ -18,7 +18,7 @@ public abstract class GroupControl {
 		this.building = building;
 	}
 
-	public abstract Car assignElevator(List<Shaft> shafts);
+	public abstract Car getBestElevator(Call call);
 
     public abstract void controlElevators(int time, TrafficPattern.CallPattern currentPattern);
 
@@ -41,6 +41,18 @@ public abstract class GroupControl {
 
 	public void startControlling(int time, TrafficPattern.CallPattern currentPattern) {
 	    controlElevators(time, currentPattern);
+    }
+
+    protected Car.Direction getDirection(Floor from, Floor to) {
+        Car.Direction direction = Car.Direction.Idle;
+        if(from.getLevel() < to.getLevel())
+            direction = Car.Direction.Up;
+        else if(from.getLevel() > to.getLevel())
+            direction = Car.Direction.Down;
+        else if(from.getLevel() == to.getLevel())
+            direction = Car.Direction.Idle;
+
+        return direction;
     }
 
 }

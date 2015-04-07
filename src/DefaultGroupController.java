@@ -11,12 +11,7 @@ public class DefaultGroupController extends GroupControl {
     }
 
     @Override
-    public Car assignElevator(List<Shaft> shafts) {
-        //Returns first elevator it finds
-        return building.getCars().get(0);
-    }
-
-    public Car getBestElevator() {
+    public Car getBestElevator(Call call) {
         return building.getCars().get(0);
     }
 
@@ -31,8 +26,8 @@ public class DefaultGroupController extends GroupControl {
 
         while ( it.hasNext()) {
             call = it.next();
-            if (!getBestElevator().isBusy()) {
-                getBestElevator().assignTo(call);
+            if (!getBestElevator(null).isBusy()) {
+                getBestElevator(null).assignTo(call);
                 assignedCalls.add(call);
                 it.remove();
             }
@@ -84,18 +79,6 @@ public class DefaultGroupController extends GroupControl {
             car.setDestination(car.getAssignedCall().passengerPickedUp(time));
             Log.log("Added passenger: from = " + p.getStart().getLevel() + ", to = " + p.getDestination().getLevel() + ", time: " + time);
         }
-    }
-
-    private Car.Direction getDirection(Floor from, Floor to) {
-        Car.Direction direction = Car.Direction.Idle;
-        if(from.getLevel() < to.getLevel())
-            direction = Car.Direction.Up;
-        else if(from.getLevel() > to.getLevel())
-            direction = Car.Direction.Down;
-        else if(from.getLevel() == to.getLevel())
-            direction = Car.Direction.Idle;
-
-        return direction;
     }
 
     private void dropPrivetOutOfCar(Car car, Call call) {

@@ -29,7 +29,10 @@ public class Main {
     	} else if (args[0].toUpperCase().equals("NC") ) {
     		System.out.println("Running Nearest Car algorithm");
     		engine = new ElevatorEngine (building, chart, new NearestCar(building));
-    	} else {
+    	} else if (args[0].toUpperCase().equals("FSO") ) {
+            System.out.println("Running Fixed Sectoring Common Sector System algorithm");
+            engine = new ElevatorEngine (building, chart, new FSO(building));
+        } else {
     		System.out.println("Didn't recognise algorithm. Running default controller");
     		engine = new ElevatorEngine(building, chart);
     	}

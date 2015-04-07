@@ -1,56 +1,64 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-public class NearestCar extends GroupControl {
+/**
+ * Created by Fredrik on 4/7/2015.
+ */
+public class FSO extends GroupControl {
 
-	int N;
-	
-	public NearestCar(Building building) {
+	private class Sector {
+		Floor startFloor, endFloor;
+		Car assignedCar;
+
+		public Sector(Floor start, Floor end, Car assCar) {
+			startFloor = start;
+			endFloor = end;
+			assignedCar = assCar;
+			assCar.setDestination(startFloor);
+		}
+
+		public boolean isCallInSector(Call call) {
+			int start = startFloor.getLevel(), end = endFloor.getLevel(), callFloor = call.getFrom().getLevel();
+			return callFloor >= start && callFloor <= end;
+		}
+
+		public String toString() {
+			return "Sector start floor: " + startFloor.getLevel() + " end floor: " + endFloor.getLevel() + " elevator: " + assignedCar.getNumber();
+		}
+	}
+
+	private ArrayList<Sector> sectors;
+
+    public FSO(Building building) {
         super(building);
-        N = building.getNumberOfFloors();
+        sectors = new ArrayList<Sector>();
+
+        int cars = building.getCars().size();
+        int floors = building.getNumberOfFloors();
+        int range = (floors-1)/(cars-1);
+        for(int i=0; i<cars; i++) {
+        	if(i == 0) {
+        		sectors.add(new Sector(building.getTerminalFloor(), building.getTerminalFloor(), building.getCars().get(i)));
+        	} else if(i == cars-1) {
+        		sectors.add(new Sector( building.getFloor((i-1) * range+1*i), building.getFloor(floors-1), building.getCars().get(i)));
+        	} else {
+        		sectors.add(new Sector( building.getFloor((i-1) * range+1*i), building.getFloor(i*(range+1)), building.getCars().get(i)));
+        	}
+        }
+        for(Sector s : sectors) {
+        	Log.log("" + s.toString());
+        }
+
     }
 
-    /**
-	* Calculates the most appropriate elevator to assign to a call.
-    */
     @Override
     public Car getBestElevator(Call call) {
-    	int FS = 1, d;
-    	List<Car> cars = building.getCars();
-    	Car selectedCar = cars.get(0);
-    	for (int i=0; i<cars.size(); i++) {
-    		d = Math.abs(cars.get(i).getLocation().getLevel() - call.getTo().getLevel());
-    		Car.Direction direction = cars.get(i).getDirection();
-    		Car.Direction elevatorCallDirection = getDirection(cars.get(i).getLocation(), call.getFrom());
-    		Car.Direction callDirection = getDirection(call.getFrom(), call.getTo());
-    		int newFS = 1;
-    		switch(direction) {
-    			case Idle:
-    				newFS = N + 1 - d;
-    			case Down:
-    				if (elevatorCallDirection == Car.Direction.Up) {
-    					newFS = 1;
-    				} else if (elevatorCallDirection == Car.Direction.Down && callDirection == Car.Direction.Up) {
-    					newFS = N + 1 - d;
-    				} else if (elevatorCallDirection == Car.Direction.Down && callDirection == Car.Direction.Down) {
-    					newFS = N + 1 - (d - 1);
-    				}
-    			case Up:
-    				if (elevatorCallDirection == Car.Direction.Down) {
-    					newFS = 1;
-    				} else if (elevatorCallDirection == Car.Direction.Up && callDirection == Car.Direction.Down) {
-    					newFS = N + 1 - d;
-    				} else if (elevatorCallDirection == Car.Direction.Up && callDirection == Car.Direction.Up) {
-    					newFS = N + 1 - (d - 1);
-    				}
-    		}
-    		if (newFS > FS) {
-    			selectedCar = cars.get(i);
-    			FS = newFS;
-    		} if (newFS == FS) {
-    			int r = new Random().nextInt(2);
-    			if(r == 1) {
-    				selectedCar = cars.get(i);
-    			}
+    	Car selectedCar = building.getCars().get(0);
+    	for(Sector sector : sectors) {
+    		if(sector.isCallInSector(call)){
+    			selectedCar = sector.assignedCar;
+    			break;
     		}
     	}
         return selectedCar;
@@ -58,8 +66,6 @@ public class NearestCar extends GroupControl {
 
     @Override
     public void controlElevators(int time, TrafficPattern.CallPattern currentPattern) {
-        //TODO: Control ze elevatorz
-
     	Call call;
         Iterator<Call> it = newCalls.iterator();
 
@@ -71,9 +77,6 @@ public class NearestCar extends GroupControl {
         ElevatorEngine.R.addValue(waitingCalls, time);
 
         for(Car car : building.getCars()) {
-            if (!car.isBusy() && currentPattern == TrafficPattern.CallPattern.UpPeak) {
-                car.setDestination(building.getTerminalFloor());
-            }
         	car.move(building);
         }
 
@@ -121,5 +124,4 @@ public class NearestCar extends GroupControl {
         Log.log("" + call.waitingTime());
         ElevatorEngine.R.totalWaitingTime += call.waitingTime();
     }
-
 }
