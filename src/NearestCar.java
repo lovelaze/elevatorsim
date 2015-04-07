@@ -88,12 +88,12 @@ public class NearestCar extends GroupControl {
         while (it.hasNext()) {
             call = it.next();
             car = call.getAssignee();
-            //System.out.println("from: " + call.getFrom().getLevel() + " to: " + call.getTo().getLevel() + " pickedUp: " + call.isPickedUp());
+            //Log.log("from: " + call.getFrom().getLevel() + " to: " + call.getTo().getLevel() + " pickedUp: " + call.isPickedUp());
 
             if (!car.isMoving()) {
                 if (car.getLocation().getLevel() == call.getTo().getLevel() && call.isPickedUp()) {
                     // dropa snuber
-                    System.out.println("Removed Passenger from: " + call.getFrom().getLevel() + " to: " + call.getTo().getLevel() + " from elevator: " + car.getNumber());
+                    Log.log("Removed Passenger from: " + call.getFrom().getLevel() + " to: " + call.getTo().getLevel() + " from elevator: " + car.getNumber());
                     dropPrivetOutOfCar(car, call);
 
                     it.remove();
@@ -110,7 +110,7 @@ public class NearestCar extends GroupControl {
 		Passenger p = call.getCaller();
     	car.addPassenger(p, time);
     	car.getLocation().getPassengers().remove(p);
-		System.out.println("Added passenger: from = " + p.getStart().getLevel() + ", to = " + p.getDestination().getLevel() + ", time: " + time + " in elevator: " + car.getNumber());
+		Log.log("Added passenger: from = " + p.getStart().getLevel() + ", to = " + p.getDestination().getLevel() + ", time: " + time + " in elevator: " + car.getNumber());
     }
 
     private Car.Direction getDirection(Floor from, Floor to) {
@@ -128,7 +128,7 @@ public class NearestCar extends GroupControl {
     private void dropPrivetOutOfCar(Car car, Call call) {
         //TODO: Drop privet
         car.removePassenger(call.getCaller());
-        System.out.println(call.waitingTime());
+        Log.log("" + call.waitingTime());
         ElevatorEngine.R.totalWaitingTime += call.waitingTime();
     }
 

@@ -26,7 +26,7 @@ public class Call {
         this.caller = caller;
         timeRequest = time;
         isPickedUp = false;
-        System.out.println("New call at time: " + time + " from: " + from.getLevel() + " to: " + to.getLevel());
+        Log.log("New call at time: " + time + " from: " + from.getLevel() + " to: " + to.getLevel());
     }
 
     public void setFinished() {

@@ -75,11 +75,11 @@ public class Car {
 
         if (progress >= Parameters.travelTicks) {
             location = building.getAboveFloor(location);
-            System.out.println("Elevator " + number + " now at level = "+ getLocation().getLevel());
+            Log.log("Elevator " + number + " now at level = "+ getLocation().getLevel());
             progress = 0;
         } else if (progress <= -Parameters.travelTicks) {
             location = building.getUnderFloor(location);
-            System.out.println("Elevator " + number + " now at level = "+ getLocation().getLevel());
+            Log.log("Elevator " + number + " now at level = "+ getLocation().getLevel());
             progress = 0;
         }
 
@@ -132,7 +132,7 @@ public class Car {
                 waitingCalls.add(call);
             }
         }*/
-        System.out.println("Elevator " + number + " has " + waitingCalls.size() + " waiting calls");
+        Log.log("Elevator " + number + " has " + waitingCalls.size() + " waiting calls");
     }
 
     public void addPassenger(Passenger passenger, int time) {

@@ -61,7 +61,7 @@ public class TrafficPattern {
     }
 
     private void upPeak() {
-        System.out.println("UPPEAK");
+        Log.log("UPPEAK");
         while (totalPassengers > 0) {
             int spawnPeople = random.nextInt(100)+1;
             Step step = new Step();
@@ -87,19 +87,19 @@ public class TrafficPattern {
             }
             steps.add(step);
         }
-        System.out.println(steps.size());
+        Log.log("" + steps.size());
     }
 
     private void downPeak() {
-        System.out.println("DOWNPEAK");
+        Log.log("DOWNPEAK");
     }
 
     private void specialFloor() {
-        System.out.println("SPECIALFLOOR");
+        Log.log("SPECIALFLOOR");
     }
 
     private void ordinary() {
-        System.out.println("ORDINARY");
+        Log.log("ORDINARY");
     }
 
 }
