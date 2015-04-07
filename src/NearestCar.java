@@ -68,6 +68,13 @@ public class NearestCar extends GroupControl {
     	Call call;
         Iterator<Call> it = newCalls.iterator();
 
+        int waitingCalls = 0;
+        for(Call c : assignedCalls) {
+            if(!c.isPickedUp())
+                waitingCalls++;
+        }
+        ElevatorEngine.R.addValue(waitingCalls, time);
+
         for(Car car : building.getCars()) {
             if (!car.isBusy() && currentPattern == TrafficPattern.CallPattern.UpPeak) {
                 car.setDestination(building.getTerminalFloor());

@@ -1,6 +1,13 @@
+import java.io.*;
+import org.jfree.chart.JFreeChart; 
+import org.jfree.chart.ChartFactory; 
+import org.jfree.chart.ChartUtilities; 
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
 
         Building building = BuildingFactory.defaultBuilding();
     	ElevatorEngine engine = null;

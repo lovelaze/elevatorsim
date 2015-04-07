@@ -17,8 +17,10 @@ public class ElevatorEngine {
 
     private ArrayList<Call> currentCalls;
 
-    private int stepLength = 100, stepCounter = 0, time  = 0;
-    private int totalPassengers = 10000;
+    int step = 0, allSteps = 0;
+
+    private int stepLength = 50, stepCounter = 0, time  = 0;
+    private int totalPassengers = 1000;
 
     public ElevatorEngine(Building building) {
         this(building, new DefaultGroupController(building));
@@ -29,6 +31,7 @@ public class ElevatorEngine {
         groupController = controller;
         R = new SimulationResult();
         pattern = new TrafficPattern( TrafficPattern.CallPattern.UpPeak, building, totalPassengers);
+        allSteps = pattern.remainingSteps();
     }
 
     public boolean isRunning() {
@@ -39,12 +42,13 @@ public class ElevatorEngine {
 
     public void stepping() {
         if(stepCounter>=stepLength){
+            step++;
             currentCalls = pattern.nextStep(time);
             groupController.addCalls(currentCalls);
             currentCalls.clear();
 
         	Log.log("Remaining steps: " + pattern.remainingSteps() + ", New calls: "  + groupController.getNewCalls().size()+ ", Assigned Calls: " + groupController.getAssignedCalls().size());
-
+            System.out.println(step + "/" + allSteps);
             stepCounter = 0;
         }
 
