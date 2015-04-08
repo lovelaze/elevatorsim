@@ -96,6 +96,33 @@ public class TrafficPattern {
 
     private void downPeak() {
         Log.log("DOWNPEAK");
+        while (totalPassengers > 0) {
+            int spawnPeople = random.nextInt(100)+1;
+            Step step = new Step();
+            if(spawnPeople > 70) {
+                int numberOfPeople = random.nextInt(5)+1;
+                while (totalPassengers - numberOfPeople < 0) {numberOfPeople = random.nextInt(5)+1;}
+                for(int i=0; i<numberOfPeople; i++) {
+                    Floor start, stop;
+                    int terminalFloor = random.nextInt(100)+1;
+                    int startFloor = random.nextInt(building.getFloors().size());
+                    
+                    int stopFloor = building.getTerminalFloor().getLevel();
+                    if(terminalFloor > 20)
+                        stop = building.getTerminalFloor();
+                    else{
+                        stopFloor = random.nextInt(building.getFloors().size());
+                        stop = building.getFloor(startFloor);
+                    }
+                    while (stopFloor == startFloor) {startFloor = random.nextInt(building.getFloors().size());}
+                    start = building.getFloor(startFloor);
+                    step.addPassenger(new Passenger(start, stop));
+                }
+                totalPassengers -= numberOfPeople;
+            }
+            steps.add(step);
+        }
+        Log.log("" + steps.size());
     }
 
     private void specialFloor() {

@@ -30,7 +30,7 @@ public class ElevatorEngine {
         this.building = building;
         groupController = controller;
         R = new SimulationResult(chart);
-        pattern = new TrafficPattern( TrafficPattern.CallPattern.UpPeak, building, totalPassengers);
+        pattern = new TrafficPattern( TrafficPattern.CallPattern.DownPeak, building, totalPassengers);
         allSteps = pattern.remainingSteps();
     }
 
