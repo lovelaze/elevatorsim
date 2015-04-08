@@ -105,6 +105,10 @@ public class Car {
         return location;
     }
 
+    public Floor getDestination() {
+        return destination;
+    }
+
     public Direction getDirection() {
         return direction;
     }

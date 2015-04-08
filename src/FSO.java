@@ -18,6 +18,10 @@ public class FSO extends GroupControl {
 			assCar.setDestination(startFloor);
 		}
 
+        public boolean returningToSector() {
+            return assignedCar.getDestination().getLevel() == startFloor.getLevel();
+        }
+
 		public boolean isCallInSector(Call call) {
 			int start = startFloor.getLevel(), end = endFloor.getLevel(), callFloor = call.getFrom().getLevel();
 			return callFloor >= start && callFloor <= end;
@@ -44,8 +48,11 @@ public class FSO extends GroupControl {
         }
 
 		public String toString() {
-			return "Sector start floor: " + startFloor.getLevel() + " end floor: " + endFloor.getLevel() + " elevator: " + assignedCar.getNumber();
-		}
+            if(assignedCar != null)
+			     return "Sector start floor: " + startFloor.getLevel() + " end floor: " + endFloor.getLevel() + " elevator: " + assignedCar.getNumber();
+            else
+                 return "Sector start floor: " + startFloor.getLevel() + " end floor: " + endFloor.getLevel() + " elevator: " + "no assigned elevator.";
+        }
 	}
 
 	private ArrayList<Sector> sectors;
@@ -75,6 +82,11 @@ public class FSO extends GroupControl {
     @Override
     public Car getBestElevator(Call call) {
     	Car selectedCar = null;
+        for(Car c : building.getCars()){
+            if(c.isMoving() && c.getDirection() == Car.Direction.Up) {
+
+            }
+        }
     	for(Sector sector : sectors) {
     		if(sector.isCallInSector(call)){
     			selectedCar = sector.assignedCar;
@@ -102,8 +114,6 @@ public class FSO extends GroupControl {
                 }
             }
         }
-        if(selectedCar == null)
-            selectedCar = building.getCars().get(0);
         return selectedCar;
     }
 
@@ -126,13 +136,16 @@ public class FSO extends GroupControl {
         while (it.hasNext()) {
         	call = it.next();
         	Car bestCar = getBestElevator(call);
-        	bestCar.assignTo(call);
-        	assignedCalls.add(call);
-        	it.remove();
+            if(bestCar != null) {
+                bestCar.assignTo(call);
+                assignedCalls.add(call);
+                it.remove();
+            }
         }
 
         for(Sector s : sectors) {
-            if(s.assignedCar != null && s.assignedCar.isBusy() && s.assignedCar.getAssignedCall() != null){
+            if(s.assignedCar != null && !s.returningToSector() && !s.isCarInSector(s.assignedCar)){
+                Log.log("Deassigned " + s.toString());
                 s.deAssign();
             }
         }
@@ -173,17 +186,21 @@ public class FSO extends GroupControl {
 
             if (currentsector.isVacant()) {
                 currentsector.assign(car);
+                Log.log("Assigned " + currentsector.toString());
             }
 
             int index = sectors.indexOf(currentsector);
             int i = 1;
             while (!car.isBusy()) {
+                if(index - i < 0 && index + i > sectors.size()+1)
+                    break;
                 int tempindex = index - i;
                 Sector tempsector = null;
                 if (tempindex >= 0) {
                     tempsector = sectors.get(tempindex);
                     if (tempsector.isVacant()) {
                         tempsector.assign(car);
+                        Log.log("Assigned " + tempsector.toString());
                         break;
                     }
                 }
@@ -193,6 +210,7 @@ public class FSO extends GroupControl {
                     tempsector = sectors.get(tempindex);
                     if (tempsector.isVacant()) {
                         tempsector.assign(car);
+                        Log.log("Assigned " + tempsector.toString());
                         break;
                     }
                 }

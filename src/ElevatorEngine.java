@@ -20,7 +20,7 @@ public class ElevatorEngine {
     int step = 0, allSteps = 0;
 
     private int stepLength = 50, stepCounter = 0, time  = 0;
-    private int totalPassengers = 10000;
+    private int totalPassengers = 1000;
 
     public ElevatorEngine(Building building, boolean chart) {
         this(building, chart, new DefaultGroupController(building));
