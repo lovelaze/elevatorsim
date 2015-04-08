@@ -29,6 +29,10 @@ public class SimulationResult {
     }
 
     public void printResult(Building building) throws IOException{
+        printResult(building, "fisk");
+    }
+
+    public void printResult(Building building, String algorithm) throws IOException{
         System.out.println("totalCalls = " + totalCalls);
         System.out.println("totalPassengers = " + totalPassengers);
         System.out.println("totalTravelTime = " + totalTravelTime);
@@ -49,7 +53,7 @@ public class SimulationResult {
 
             int width = 640; /* Width of the image */
             int height = 480; /* Height of the image */ 
-            File lineChart = new File( "fisk.jpeg" ); 
+            File lineChart = new File( algorithm + ".jpeg" ); 
             ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
 
         }

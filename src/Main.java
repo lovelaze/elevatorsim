@@ -39,6 +39,9 @@ public class Main {
         
 
         while (!engine.isRunning()) {}
-        ElevatorEngine.R.printResult(building);
+        if (args.length >= 1)
+            ElevatorEngine.R.printResult(building, args[0].toUpperCase());
+        else
+            ElevatorEngine.R.printResult(building);
     }
 }
