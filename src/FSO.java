@@ -117,20 +117,28 @@ public class FSO extends GroupControl {
         return selectedCar;
     }
 
+    int tTicker = 0;
+
     @Override
     public void controlElevators(int time, TrafficPattern.CallPattern currentPattern) {
     	Call call;
         Iterator<Call> it = newCalls.iterator();
 
-        int waitingCalls = 0;
+        int pickedUpCalls = 0;
         for(Call c : assignedCalls) {
-            if(!c.isPickedUp())
-                waitingCalls++;
+            if(c.isPickedUp())
+                pickedUpCalls++;
         }
-        ElevatorEngine.R.addValue(waitingCalls, time);
+        tTicker++;
+        if(tTicker > 10000){
+            ElevatorEngine.R.peopleFlow += ElevatorEngine.R.servedCalls;
+            ElevatorEngine.R.servedCalls = 0;
+            ElevatorEngine.R.measures++;
+            tTicker = 0;
+        }
 
         for(Car car : building.getCars()) {
-        	car.move(building);
+        	car.move(building, time);
         }
 
         while (it.hasNext()) {

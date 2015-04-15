@@ -21,7 +21,7 @@ public class DefaultGroupController extends GroupControl {
         Iterator<Call> it = newCalls.iterator();
 
         for(Car car : building.getCars())  {
-            car.move(building);
+            car.move(building, time);
         }
 
         while ( it.hasNext()) {

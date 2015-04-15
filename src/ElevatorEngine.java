@@ -41,6 +41,7 @@ public class ElevatorEngine {
     }
 
     public void stepping() {
+        R.totalTravelTime++;
         if(stepCounter>=stepLength){
             step++;
             currentCalls = pattern.nextStep(time);

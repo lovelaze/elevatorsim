@@ -14,7 +14,11 @@ public class SimulationResult {
     public int totalPassengers;
     public int totalTravelTime;
     public int totalWaitingTime;
-    public int averageRoundTripTime;
+    public int totalTripTime;
+    public int trips;
+    public int servedCalls = 0;
+    public int measures = 0;
+    public float peopleFlow = 0;
 
     private DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
     private boolean chart;
@@ -23,7 +27,7 @@ public class SimulationResult {
         this.chart = chart;
     }
 
-    public void addValue(int waitingPassengers, int tick) {
+    public void addValue(float waitingPassengers, int tick) {
         if(chart)
             line_chart_dataset.addValue( waitingPassengers , "passengers" , "" + tick );
     }
@@ -37,8 +41,9 @@ public class SimulationResult {
         System.out.println("totalPassengers = " + totalPassengers);
         System.out.println("totalTravelTime = " + totalTravelTime);
         System.out.println("totalWaitingTime = " + totalWaitingTime);
-        System.out.println("averageRoundTripTime = " + averageRoundTripTime);
+        System.out.println("averageRoundTripTime = " + (totalTripTime/trips));
         System.out.println("averageWaitingTime = " + (totalWaitingTime/totalPassengers));
+        System.out.println("averagePeopleFlow = " + (peopleFlow/measures));
         for(Car car : building.getCars()) {
             System.out.println(car.getResult());
         }
@@ -46,8 +51,8 @@ public class SimulationResult {
         if(chart) {
 
             JFreeChart lineChartObject = ChartFactory.createLineChart(
-             "Waiting calls every tick","Tick",
-             "Waiting calls",
+             "Passenger flow","Ticks",
+             "Passengers in elevators",
              line_chart_dataset,PlotOrientation.VERTICAL,
              true,true,false);
 

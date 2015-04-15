@@ -18,6 +18,8 @@ public class Car {
     private int number;
     private ArrayList<Call> waitingCalls;
 
+    private int roundTripTime = 0;
+
     private int servedCalls = 0;
 
     public Car(Floor location, int number) {
@@ -49,13 +51,22 @@ public class Car {
         return passengers;
     }
 
-    public void move(Building building){
-        if(destination.getLevel() < location.getLevel())
+    public void move(Building building, int time){
+        if(destination.getLevel() < location.getLevel()){
             direction = Direction.Down;
-        else if(destination.getLevel() > location.getLevel())
+            if (location.getLevel() == building.getTerminalFloor().getLevel() )
+                roundTripTime = time;
+        } else if(destination.getLevel() > location.getLevel()){
             direction = Direction.Up;
-        else if(destination.getLevel() == location.getLevel())
+            if (location.getLevel() == building.getTerminalFloor().getLevel() )
+                roundTripTime = time;
+        } else if(destination.getLevel() == location.getLevel()){
             direction = Direction.Idle;
+            if (location.getLevel() == building.getTerminalFloor().getLevel() ){
+                ElevatorEngine.R.totalTripTime += time - roundTripTime;
+                ElevatorEngine.R.trips++;
+            }
+        }
 
         switch (direction) {
             case Idle:
@@ -161,6 +172,7 @@ public class Car {
         assignedCall = null;
         waitingCalls.remove(passenger.getCurrentCall());
         calculateDestination();
+        ElevatorEngine.R.servedCalls++;
     }
 
     public void calculateDestination() {
