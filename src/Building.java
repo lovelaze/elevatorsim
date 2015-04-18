@@ -32,6 +32,22 @@ public class Building {
         return floors.get(index-1);
     }
 
+    public Shaft getRightShaft(Shaft shaft) {
+        int index = shafts.indexOf(shaft);
+        if (index == shafts.size()-1 ) {
+            return null;
+        }
+        return shafts.get(index+1);
+    }
+
+    public Shaft getLeftShaft(Shaft shaft) {
+        int index = shafts.indexOf(shaft);
+        if (index == 0) {
+            return null;
+        }
+        return shafts.get(index-1);
+    }
+
     public int getNumberOfFloors() {
         return floors.size();
     }

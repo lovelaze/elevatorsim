@@ -12,9 +12,10 @@ public class Car {
 
     private Direction direction;
     private Floor location, destination;
+    private Shaft shaftLocation, shaftDestination;
     private ArrayList<Passenger> passengers;
     private Call assignedCall;
-    private int progress = 0;
+    private int progress = 0, sideProgress = 0;
     private int number;
     private ArrayList<Call> waitingCalls;
 
@@ -22,10 +23,12 @@ public class Car {
 
     private int servedCalls = 0;
 
-    public Car(Floor location, int number) {
+    public Car(Floor location, int number, Shaft shaftLocation) {
         direction = Direction.Idle;
         this.location = location;
+        this.shaftLocation = shaftLocation;
         destination = location;
+        shaftDestination = shaftLocation;
         passengers = new ArrayList<Passenger>();
         waitingCalls = new ArrayList<Call>();
         this.number = number;
@@ -43,6 +46,10 @@ public class Car {
         return "Elevator " + number + " served " + servedCalls + " calls.";
     }
 
+    public String toString() {
+        return "Elevator: " + number;
+    }
+
     public boolean isBusy() {
         return direction != Direction.Idle || assignedCall != null;
     }
@@ -50,7 +57,7 @@ public class Car {
     public ArrayList<Passenger> getPassengers() {
         return passengers;
     }
-
+    boolean asd = false;
     public void move(Building building, int time){
         if(destination.getLevel() < location.getLevel()){
             direction = Direction.Down;
@@ -60,6 +67,10 @@ public class Car {
             direction = Direction.Up;
             if (location.getLevel() == building.getTerminalFloor().getLevel() )
                 roundTripTime = time;
+        } else if(shaftDestination.getIndex() < shaftLocation.getIndex()){
+            direction = Direction.Left;
+        } else if(shaftDestination.getIndex() > shaftLocation.getIndex()){
+            direction = Direction.Right;
         } else if(destination.getLevel() == location.getLevel()){
             direction = Direction.Idle;
             if (location.getLevel() == building.getTerminalFloor().getLevel() ){
@@ -72,9 +83,10 @@ public class Car {
             case Idle:
                 break;
             case Left:
+                sideProgress--;
                 break;
-
             case Right:
+                sideProgress++;
                 break;
             case Up:
                 progress++;
@@ -86,12 +98,20 @@ public class Car {
 
         if (progress >= Parameters.travelTicks) {
             location = building.getAboveFloor(location);
-            Log.log("Elevator " + number + " now at level = "+ getLocation().getLevel());
+            Log.log("Elevator " + number + " now at level = "+ getLocation().getLevel() + " shaft = " + shaftLocation.getIndex());
             progress = 0;
         } else if (progress <= -Parameters.travelTicks) {
             location = building.getUnderFloor(location);
-            Log.log("Elevator " + number + " now at level = "+ getLocation().getLevel());
+            Log.log("Elevator " + number + " now at level = "+ getLocation().getLevel() + " shaft = " + shaftLocation.getIndex());
             progress = 0;
+        } else if (sideProgress >= Parameters.travelTicks) {
+            shaftLocation = shaftLocation.move(this, building.getRightShaft(shaftLocation));
+            Log.log("Elevator " + number + " now at level = "+ getLocation().getLevel() + " shaft = " + shaftLocation.getIndex());
+            sideProgress = 0;
+        } else if (sideProgress <= -Parameters.travelTicks) {
+            shaftLocation = shaftLocation.move(this, building.getLeftShaft(shaftLocation));
+            Log.log("Elevator " + number + " now at level = "+ getLocation().getLevel() + " shaft = " + shaftLocation.getIndex());
+            sideProgress = 0;
         }
 
     }
@@ -104,6 +124,7 @@ public class Car {
         direction = Car.Direction.Idle;
         assignedCall = null;
         destination = location;
+        shaftDestination = shaftLocation;
         passengers.clear();
         waitingCalls.clear();
     }
@@ -157,11 +178,20 @@ public class Car {
     }
 
     public void setDestination(Floor destination) {
+        setDestination(destination, shaftLocation);
+    }
+
+    public void setDestination(Floor destination, Shaft shaftDestination) {
         this.destination = destination;
+        this.shaftDestination = shaftDestination;
         if(destination.getLevel() < location.getLevel())
             direction = Direction.Down;
         else if(destination.getLevel() > location.getLevel())
             direction = Direction.Up;
+        else if(shaftDestination.getIndex() < shaftLocation.getIndex())
+            direction = Direction.Left;
+        else if(shaftDestination.getIndex() > shaftLocation.getIndex())
+            direction = Direction.Right;
         else if(destination.getLevel() == location.getLevel())
             direction = Direction.Idle;
     }
