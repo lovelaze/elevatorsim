@@ -1,6 +1,10 @@
 
 public class MultiDirController extends GroupControl {
 
+	public MultiDirController(Building building) {
+
+	}
+
 	public Car getBestElevator(Call call) {
 		return null;
 	}

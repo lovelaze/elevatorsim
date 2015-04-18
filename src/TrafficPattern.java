@@ -17,7 +17,7 @@ public class TrafficPattern {
 
     private ArrayList<Step> steps;
 
-    public TrafficPattern(CallPattern currentPattern, Building building, int totalPassengers) {
+    public TrafficPattern(CallPattern currentPattern, Building building, int totalPassengers, boolean traditional) {
         this.currentPattern = currentPattern;
         this.totalPassengers = totalPassengers;
         this.building = building;
@@ -36,7 +36,7 @@ public class TrafficPattern {
                 specialFloor();
                 break;
             case Ordinary:
-                ordinary();
+                ordinary(traditional);
                 break;
 
         }
@@ -129,7 +129,7 @@ public class TrafficPattern {
         Log.log("SPECIALFLOOR");
     }
 
-    private void ordinary() {
+    private void ordinary(boolean traditional) {
         Log.log("ORDINARY");
         while (totalPassengers > 0) {
             int spawnPeople = random.nextInt(100)+1;
@@ -142,11 +142,19 @@ public class TrafficPattern {
                     int startFloor = random.nextInt(building.getFloors().size());
                     
                     int stopFloor = random.nextInt(building.getFloors().size());
-                    stop = building.getFloor(startFloor);
-
-                    while (stopFloor == startFloor) {startFloor = random.nextInt(building.getFloors().size());}
+                    stop = building.getFloor(stopFloor);
+                    if(!traditional)
+                        while (stopFloor == startFloor) {startFloor = random.nextInt(building.getFloors().size());}
                     start = building.getFloor(startFloor);
-                    step.addPassenger(new Passenger(start, stop));
+                    if(!traditional){
+                        int startShaft = random.nextInt(building.getNumberOfShafts());
+                        int stopShaft = random.nextInt(building.getNumberOfShafts());
+                        if(startFloor == stopFloor)
+                            while (startShaft == stopShaft ) {stopShaft = random.nextInt(building.getNumberOfShafts()); }
+                        step.addPassenger(new Passenger(start, stop, building.getShaft(startShaft), building.getShaft(stopShaft)));
+                    } else {
+                        step.addPassenger(new Passenger(start, stop));
+                    }
                 }
                 totalPassengers -= numberOfPeople;
             }

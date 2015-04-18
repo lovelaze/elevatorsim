@@ -14,3 +14,9 @@ fsoChart:
 	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main fso chart
 fsoLog:
 	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main fso true
+multi:
+	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main multi
+multiChart:
+	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main multi chart
+multiLog:
+	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main multi true

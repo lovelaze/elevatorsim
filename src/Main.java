@@ -25,16 +25,19 @@ public class Main {
 
     	if (args.length >= 1 && (args[0] == null || args[0].equals("default"))) {
     		System.out.println("Running default controller");
-    		engine = new ElevatorEngine(building, chart);
+    		engine = new ElevatorEngine(building, chart, true);
     	} else if (args[0].toUpperCase().equals("NC") ) {
     		System.out.println("Running Nearest Car algorithm");
-    		engine = new ElevatorEngine (building, chart, new NearestCar(building));
+    		engine = new ElevatorEngine (building, chart, new NearestCar(building), true);
     	} else if (args[0].toUpperCase().equals("FSO") ) {
             System.out.println("Running Fixed Sectoring Common Sector System algorithm");
-            engine = new ElevatorEngine (building, chart, new FSO(building));
+            engine = new ElevatorEngine (building, chart, new FSO(building), true);
+        } else if (args[0].toUpperCase().equals("MULTI") ) {
+            System.out.println("Running Multi directional elevator algorithm");
+            engine = new ElevatorEngine (building, chart, new MultiDirController(building), false);
         } else {
     		System.out.println("Didn't recognise algorithm. Running default controller");
-    		engine = new ElevatorEngine(building, chart);
+    		engine = new ElevatorEngine(building, chart, true);
     	}
         
 

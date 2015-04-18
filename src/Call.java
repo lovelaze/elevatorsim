@@ -32,7 +32,10 @@ public class Call {
         this.caller = caller;
         timeRequest = time;
         isPickedUp = false;
-        Log.log("New call at time: " + time + " from: " + from.getLevel() + " to: " + to.getLevel());
+        if(fromShaft != null && toShaft != null)
+            Log.log("New call at time: " + time + " from: " + from.getLevel() + " to: " + to.getLevel() + " from shaft: " + fromShaft.getIndex() + " to shaft: " + toShaft.getIndex());
+        else
+            Log.log("New call at time: " + time + " from: " + from.getLevel() + " to: " + to.getLevel());
     }
 
     public void setFinished() {

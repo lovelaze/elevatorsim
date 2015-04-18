@@ -52,6 +52,10 @@ public class Building {
         return floors.size();
     }
 
+    public int getNumberOfShafts() {
+        return shafts.size();
+    }
+
     public ArrayList<Shaft> getShafts() {
         return shafts;
     }
@@ -90,6 +94,10 @@ public class Building {
 
     public Floor getTerminalFloor() {
     	return terminalFloor;
+    }
+
+    public Shaft getShaft(int index) {
+        return shafts.get(index);
     }
 
     public Floor getFloor(int index) {

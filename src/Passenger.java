@@ -23,9 +23,9 @@ public class Passenger {
             direction = Car.Direction.Down;
         else if(start.getLevel() - destination.getLevel() < 0)
             direction = Car.Direction.Up;
-        else if(startShaft.getIndex() < destinationShaft.getIndex())
+        else if(startShaft != null && destinationShaft != null && startShaft.getIndex() < destinationShaft.getIndex())
             direction = Car.Direction.Right;
-        else if(startShaft.getIndex() > destinationShaft.getIndex())
+        else if(startShaft != null && destinationShaft != null && startShaft.getIndex() > destinationShaft.getIndex())
             direction = Car.Direction.Left;
     }
 

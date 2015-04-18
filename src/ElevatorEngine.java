@@ -22,15 +22,15 @@ public class ElevatorEngine {
     private int stepLength = 50, stepCounter = 0, time  = 0;
     private int totalPassengers = 10000;
 
-    public ElevatorEngine(Building building, boolean chart) {
-        this(building, chart, new DefaultGroupController(building));
+    public ElevatorEngine(Building building, boolean chart, boolean traditional) {
+        this(building, chart, new DefaultGroupController(building), traditional);
     } 
 
-    public ElevatorEngine(Building building, boolean chart, GroupControl controller) {
+    public ElevatorEngine(Building building, boolean chart, GroupControl controller, boolean traditional) {
         this.building = building;
         groupController = controller;
         R = new SimulationResult(chart);
-        pattern = new TrafficPattern( TrafficPattern.CallPattern.UpPeak, building, totalPassengers);
+        pattern = new TrafficPattern( TrafficPattern.CallPattern.Ordinary, building, totalPassengers, traditional);
         allSteps = pattern.remainingSteps();
     }
 
