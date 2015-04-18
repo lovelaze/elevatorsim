@@ -5,21 +5,32 @@ public class Passenger {
 
     private Floor start;
     private Floor destination;
+    private Shaft startShaft, destinationShaft;
     private Call call;
     private Car.Direction direction;
 
     public Passenger(Floor start, Floor destination) {
+        this(start, destination, null, null);
+    }
+
+    public Passenger(Floor start, Floor destination, Shaft startShaft, Shaft destinationShaft) {
         this.start = start;
         this.destination = destination;
+        this.startShaft = startShaft;
+        this.destinationShaft = destinationShaft;
         call = null;
         if(start.getLevel() - destination.getLevel() > 0)
             direction = Car.Direction.Down;
         else if(start.getLevel() - destination.getLevel() < 0)
             direction = Car.Direction.Up;
+        else if(startShaft.getIndex() < destinationShaft.getIndex())
+            direction = Car.Direction.Right;
+        else if(startShaft.getIndex() > destinationShaft.getIndex())
+            direction = Car.Direction.Left;
     }
 
     public Call makeCall(int step) {
-    	call = new Call(start, destination, step, this);
+    	call = new Call(start, destination, startShaft, destinationShaft, step, this);
         return call;
     }
 
