@@ -50,6 +50,14 @@ public class Passenger {
         this.destination = destination;
     }
 
+    public Shaft getStartShaft() {
+        return startShaft;
+    }
+
+    public Shaft getDestinationShaft() {
+        return destinationShaft;
+    }
+
     public Floor getStart() {
         return start;
     }
