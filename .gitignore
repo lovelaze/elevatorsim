@@ -47,3 +47,5 @@ crashlytics-build.properties
 
 *.class
 *.jpeg
+.DS_Store
+.floo
