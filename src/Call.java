@@ -5,6 +5,7 @@ public class Call {
 
     private Floor from;
     private Floor to;
+    private Shaft fromShaft, toShaft;
     private int timeRequest;
     private int timePickedUp;
     private int timeArrived;
@@ -20,9 +21,14 @@ public class Call {
     }
 
     public Call(Floor from, Floor to, int time, Passenger caller) {
-        this.from = from;
+        this(from, to, null, null, time, caller);
+    }
 
+    public Call(Floor from, Floor to, Shaft fromShaft, Shaft toShaft, int time, Passenger caller) {
+        this.from = from;
+        this.fromShaft = fromShaft;
         this.to = to;
+        this.toShaft = toShaft;
         this.caller = caller;
         timeRequest = time;
         isPickedUp = false;
@@ -40,6 +46,14 @@ public class Call {
 
     public Floor getTo() {
         return to;
+    }
+
+    public Shaft getFromShaft() {
+        return fromShaft;
+    }
+
+    public Shaft getToShaft() {
+        return toShaft;
     }
 
     public Floor passengerPickedUp(int time) {
@@ -81,6 +95,6 @@ public class Call {
     }
 
     public String toString() {
-        return "from: " + from.getLevel() + ", to: " + to.getLevel();
+        return "from: " + from.getLevel() + ", to: " + to.getLevel() + ", from shaft: " + fromShaft + ", to shaft: " + toShaft;
     }
 }
