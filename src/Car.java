@@ -67,9 +67,9 @@ public class Car {
             direction = Direction.Up;
             if (location.getLevel() == building.getTerminalFloor().getLevel() )
                 roundTripTime = time;
-        } else if(shaftDestination.getIndex() < shaftLocation.getIndex()){
+        } else if(shaftDestination!= null && shaftLocation != null && shaftDestination.getIndex() < shaftLocation.getIndex()){
             direction = Direction.Left;
-        } else if(shaftDestination.getIndex() > shaftLocation.getIndex()){
+        } else if(shaftDestination!= null && shaftLocation != null && shaftDestination.getIndex() > shaftLocation.getIndex()){
             direction = Direction.Right;
         } else if(destination.getLevel() == location.getLevel()){
             direction = Direction.Idle;
@@ -215,8 +215,15 @@ public class Car {
                 if(assignedCall == null) {
                     assignedCall = call;
                 } else {
-                    int newDistance = call.isPickedUp() ? Math.abs(location.getLevel() - call.getTo().getLevel()) : Math.abs(location.getLevel() - call.getFrom().getLevel());
-                    int oldDistance = assignedCall.isPickedUp() ? Math.abs(location.getLevel() - assignedCall.getTo().getLevel()) : Math.abs(location.getLevel() - assignedCall.getFrom().getLevel());
+                    int oldDistance;
+                    int newDistance;
+                    if(shaftLocation != null && shaftDestination != null) {
+                        oldDistance = assignedCall.isPickedUp() ? Math.abs(location.getLevel() - assignedCall.getTo().getLevel()) + Math.abs(shaftLocation.getIndex() - assignedCall.getToShaft().getIndex()) : Math.abs(location.getLevel() - assignedCall.getFrom().getLevel()) + Math.abs(shaftLocation.getIndex() - assignedCall.getFromShaft().getIndex());
+                        newDistance = call.isPickedUp() ? Math.abs(location.getLevel() - call.getTo().getLevel()) + Math.abs(shaftLocation.getIndex() - call.getToShaft().getIndex()) : Math.abs(location.getLevel() - call.getFrom().getLevel()) + Math.abs(shaftLocation.getIndex() - call.getFromShaft().getIndex());
+                    } else {
+                        oldDistance = assignedCall.isPickedUp() ? Math.abs(location.getLevel() - assignedCall.getTo().getLevel()) : Math.abs(location.getLevel() - assignedCall.getFrom().getLevel());
+                        newDistance = call.isPickedUp() ? Math.abs(location.getLevel() - call.getTo().getLevel()) : Math.abs(location.getLevel() - call.getFrom().getLevel());
+                    }
                     if (newDistance < oldDistance) {
                         assignedCall = call;
                     }
@@ -224,6 +231,7 @@ public class Car {
             }
             waitingCalls.remove(assignedCall);
             destination = assignedCall.isPickedUp() ? assignedCall.getTo() : assignedCall.getFrom();
+            shaftDestination = assignedCall.isPickedUp() ? assignedCall.getToShaft() : assignedCall.getFromShaft();
         } else if(waitingCalls.isEmpty()){
             //System.out.println("STOP");
             stop();
