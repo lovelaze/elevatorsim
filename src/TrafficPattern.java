@@ -83,11 +83,14 @@ public class TrafficPattern {
                         start = building.getFloor(startFloor);
                     }
                     int stopFloor = random.nextInt(building.getFloors().size());
-                    while (stopFloor == startFloor) {stopFloor = random.nextInt(building.getFloors().size());}
+                    if(traditional)
+                        while (stopFloor == startFloor) {stopFloor = random.nextInt(building.getFloors().size());}
                     stop = building.getFloor(stopFloor);
                     if(!traditional) {
                         int startShaft = random.nextInt(building.getNumberOfShafts());
                         int stopShaft = random.nextInt(building.getNumberOfShafts());
+                        if(startFloor == stopFloor)
+                            while (startShaft == stopShaft ) {stopShaft = random.nextInt(building.getNumberOfShafts()); }
                         step.addPassenger(new Passenger(start, stop, building.getShaft(startShaft), building.getShaft(stopShaft)));
                     } else {
                         step.addPassenger(new Passenger(start, stop));
@@ -120,11 +123,14 @@ public class TrafficPattern {
                         stopFloor = random.nextInt(building.getFloors().size());
                         stop = building.getFloor(startFloor);
                     }
-                    while (stopFloor == startFloor) {startFloor = random.nextInt(building.getFloors().size());}
+                    if(traditional)
+                        while (stopFloor == startFloor) {startFloor = random.nextInt(building.getFloors().size());}
                     start = building.getFloor(startFloor);
                     if(!traditional) {
                         int startShaft = random.nextInt(building.getNumberOfShafts());
                         int stopShaft = random.nextInt(building.getNumberOfShafts());
+                        if(startFloor == stopFloor)
+                            while (startShaft == stopShaft ) {stopShaft = random.nextInt(building.getNumberOfShafts()); }
                         step.addPassenger(new Passenger(start, stop, building.getShaft(startShaft), building.getShaft(stopShaft)));
                     } else {
                         step.addPassenger(new Passenger(start, stop));
