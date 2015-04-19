@@ -46,8 +46,8 @@ public final class BuildingFactory {
         }
 
         for(int i=0; i<25; i++) {
-            Shaft shaft = building.getShaft(new Random().nextInt(5));
-            shaft.addCar(new Car(building.getFloor(new Random().nextInt(30)), i+1, shaft));
+            Shaft shaft = building.getShaft(i%5);
+            shaft.addCar(new Car(building.getTerminalFloor(), i+1, shaft));
         }
 
         return building;
