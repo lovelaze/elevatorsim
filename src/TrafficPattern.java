@@ -134,7 +134,7 @@ public class TrafficPattern {
         while (totalPassengers > 0) {
             int spawnPeople = random.nextInt(100)+1;
             Step step = new Step();
-            if(spawnPeople > 70) {
+            if(spawnPeople > 10) {
                 int numberOfPeople = random.nextInt(5)+1;
                 while (totalPassengers - numberOfPeople < 0) {numberOfPeople = random.nextInt(5)+1;}
                 for(int i=0; i<numberOfPeople; i++) {

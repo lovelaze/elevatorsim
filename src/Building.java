@@ -72,6 +72,10 @@ public class Building {
         return floors;
     }
 
+    public Floor getMiddleFloor() {
+        return getFloor(getNumberOfFloors()/2);
+    }
+
     public void addFloor(Floor floor) {
     	floors.add(floor);
     	if(floor.isTerminalFloor())

@@ -87,6 +87,8 @@ public class NearestCar extends GroupControl {
                     switch(currentPattern){
                         case UpPeak:
                             car.setDestination(building.getTerminalFloor());
+                        case DownPeak:
+                            car.setDestination(building.getMiddleFloor());
                     }
                 }
             }
