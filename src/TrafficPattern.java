@@ -27,10 +27,10 @@ public class TrafficPattern {
 
         switch (currentPattern) {
             case UpPeak:
-                upPeak();
+                upPeak(traditional);
                 break;
             case DownPeak:
-                downPeak();
+                downPeak(traditional);
                 break;
             case SpecialFloor:
                 specialFloor();
@@ -64,7 +64,7 @@ public class TrafficPattern {
         return steps.size();
     }
 
-    private void upPeak() {
+    private void upPeak(boolean traditional) {
         Log.log("UPPEAK");
         while (totalPassengers > 0) {
             int spawnPeople = random.nextInt(100)+1;
@@ -85,7 +85,13 @@ public class TrafficPattern {
                     int stopFloor = random.nextInt(building.getFloors().size());
                     while (stopFloor == startFloor) {stopFloor = random.nextInt(building.getFloors().size());}
                     stop = building.getFloor(stopFloor);
-                    step.addPassenger(new Passenger(start, stop));
+                    if(!traditional) {
+                        int startShaft = random.nextInt(building.getNumberOfShafts());
+                        int stopShaft = random.nextInt(building.getNumberOfShafts());
+                        step.addPassenger(new Passenger(start, stop, building.getShaft(startShaft), building.getShaft(stopShaft)));
+                    } else {
+                        step.addPassenger(new Passenger(start, stop));
+                    }
                 }
                 totalPassengers -= numberOfPeople;
             }
@@ -94,7 +100,7 @@ public class TrafficPattern {
         Log.log("" + steps.size());
     }
 
-    private void downPeak() {
+    private void downPeak(boolean traditional) {
         Log.log("DOWNPEAK");
         while (totalPassengers > 0) {
             int spawnPeople = random.nextInt(100)+1;
@@ -116,7 +122,13 @@ public class TrafficPattern {
                     }
                     while (stopFloor == startFloor) {startFloor = random.nextInt(building.getFloors().size());}
                     start = building.getFloor(startFloor);
-                    step.addPassenger(new Passenger(start, stop));
+                    if(!traditional) {
+                        int startShaft = random.nextInt(building.getNumberOfShafts());
+                        int stopShaft = random.nextInt(building.getNumberOfShafts());
+                        step.addPassenger(new Passenger(start, stop, building.getShaft(startShaft), building.getShaft(stopShaft)));
+                    } else {
+                        step.addPassenger(new Passenger(start, stop));
+                    }
                 }
                 totalPassengers -= numberOfPeople;
             }
@@ -143,7 +155,7 @@ public class TrafficPattern {
                     
                     int stopFloor = random.nextInt(building.getFloors().size());
                     stop = building.getFloor(stopFloor);
-                    if(!traditional)
+                    if(traditional)
                         while (stopFloor == startFloor) {startFloor = random.nextInt(building.getFloors().size());}
                     start = building.getFloor(startFloor);
                     if(!traditional){

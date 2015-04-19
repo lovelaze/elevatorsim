@@ -99,7 +99,7 @@ public class MultiDirController extends GroupControl {
         				case UpPeak:
         					car.setDestination(building.getTerminalFloor());
         				case DownPeak:
-        					break;
+        					car.setDestination(building.getMiddleFloor());
         			}
         		}
         	}
