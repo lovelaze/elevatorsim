@@ -68,9 +68,9 @@ public class FSO extends GroupControl {
         	if(i == 0) {
         		sectors.add(new Sector(building.getTerminalFloor(), building.getTerminalFloor(), building.getCars().get(i)));
         	} else if(i == cars-1) {
-        		sectors.add(new Sector( building.getFloor((i-1) * range+1*i), building.getFloor(floors-1), building.getCars().get(i)));
+        		sectors.add(new Sector( building.getFloor((i-1) * (range-1)+i), building.getFloor(floors-1), building.getCars().get(i)));
         	} else {
-        		sectors.add(new Sector( building.getFloor((i-1) * range+1*i), building.getFloor(i*(range+1)), building.getCars().get(i)));
+        		sectors.add(new Sector( building.getFloor((i-1) * (range-1)+i), building.getFloor(i*(range)), building.getCars().get(i)));
         	}
         }
         for(Sector s : sectors) {
