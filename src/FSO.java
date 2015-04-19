@@ -83,8 +83,11 @@ public class FSO extends GroupControl {
     public Car getBestElevator(Call call) {
     	Car selectedCar = null;
         for(Car c : building.getCars()){
-            if(c.isMoving() && c.getDirection() == Car.Direction.Up) {
-
+            if(c.isMoving() && c.getDirection() == Car.Direction.Up && getDirection(call.getFrom(), call.getTo()) == Car.Direction.Up && getDirection(c.getLocation(), call.getFrom()) == Car.Direction.Up) {
+                return c;
+            }
+            if(c.isMoving() && c.getDirection() == Car.Direction.Down && getDirection(call.getFrom(), call.getTo()) == Car.Direction.Down && getDirection(c.getLocation(), call.getFrom()) == Car.Direction.Down) {
+                return c;
             }
         }
     	for(Sector sector : sectors) {

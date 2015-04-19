@@ -32,11 +32,15 @@ public class SimulationResult {
             line_chart_dataset.addValue( waitingPassengers , "passengers" , "" + tick );
     }
 
-    public void printResult(Building building) throws IOException{
-        printResult(building, "fisk");
+    public void printResult() throws IOException{
+        printResult("fisk");
     }
 
-    public void printResult(Building building, String algorithm) throws IOException{
+    public int getAverageWaitingTime() {
+        return totalWaitingTime/totalPassengers;
+    }
+
+    public void printResult(String algorithm) throws IOException{
         System.out.println("totalCalls = " + totalCalls);
         System.out.println("totalPassengers = " + totalPassengers);
         System.out.println("totalTravelTime = " + totalTravelTime);
@@ -44,9 +48,6 @@ public class SimulationResult {
         System.out.println("averageRoundTripTime = " + (totalTripTime/trips));
         System.out.println("averageWaitingTime = " + (totalWaitingTime/totalPassengers));
         System.out.println("averagePeopleFlow = " + (peopleFlow/measures));
-        for(Car car : building.getCars()) {
-            System.out.println(car.getResult());
-        }
 
         if(chart) {
 
