@@ -137,6 +137,10 @@ public class Car {
         return location;
     }
 
+    public Shaft getShaftLocation() {
+        return shaftLocation;
+    }
+
     public Floor getDestination() {
         return destination;
     }

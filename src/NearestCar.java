@@ -3,10 +3,12 @@ import java.util.*;
 public class NearestCar extends GroupControl {
 
 	int N;
-	
-	public NearestCar(Building building) {
+    boolean optimized;
+
+	public NearestCar(Building building, boolean optimized) {
         super(building);
         N = building.getNumberOfFloors();
+        this.optimized = optimized;
     }
 
     /**
@@ -18,7 +20,7 @@ public class NearestCar extends GroupControl {
     	List<Car> cars = building.getCars();
     	Car selectedCar = cars.get(0);
     	for (int i=0; i<cars.size(); i++) {
-    		d = Math.abs(cars.get(i).getLocation().getLevel() - call.getTo().getLevel());
+    		d = Math.abs(cars.get(i).getLocation().getLevel() - call.getFrom().getLevel());
     		Car.Direction direction = cars.get(i).getDirection();
     		Car.Direction elevatorCallDirection = getDirection(cars.get(i).getLocation(), call.getFrom());
     		Car.Direction callDirection = getDirection(call.getFrom(), call.getTo());
@@ -80,7 +82,14 @@ public class NearestCar extends GroupControl {
 
 
         for(Car car : building.getCars()) {
-            
+            if(optimized){
+                if(!car.isBusy()){
+                    switch(currentPattern){
+                        case UpPeak:
+                            car.setDestination(building.getTerminalFloor());
+                    }
+                }
+            }
         	car.move(building, time);
         }
 

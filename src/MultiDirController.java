@@ -2,12 +2,74 @@ import java.util.*;
 
 public class MultiDirController extends GroupControl {
 
-	public MultiDirController(Building building) {
+	private int N;
+	private int M;
+	private boolean optimized;
+
+	public MultiDirController(Building building, boolean optimized) {
 		super(building);
+		N = building.getNumberOfFloors();
+		M = building.getNumberOfShafts();
+		this.optimized = optimized;
 	}
 
 	public Car getBestElevator(Call call) {
-		return building.getCars().get(0);
+
+		int FS = 1;
+		List<Car> cars = building.getCars();
+		Car selectedCar = cars.get(0);
+		for(int i=0; i<cars.size(); i++) {
+			Car car = cars.get(i);
+			int d = Math.abs(car.getLocation().getLevel() - call.getFrom().getLevel());
+			int h = Math.abs(car.getShaftLocation().getIndex() - call.getFromShaft().getIndex());
+			Car.Direction direction = car.getDirection();
+    		Car.Direction elevatorCallDirection = getDirection(car.getLocation(), call.getFrom(), car.getShaftLocation(), call.getFromShaft());
+    		Car.Direction callDirection = getDirection(call.getFrom(), call.getTo(), call.getFromShaft(), call.getToShaft());
+    		int newFS = 1;
+
+			switch(direction) {
+    			case Idle:
+    				newFS = N + M + 2 - d - h;
+    			case Down:
+    				if (elevatorCallDirection == Car.Direction.Up) {
+    					newFS = 1;
+    				} else if (elevatorCallDirection == Car.Direction.Down && callDirection == Car.Direction.Up) {
+    					newFS = N + M + 4 - d - h;
+    				} else if (elevatorCallDirection == Car.Direction.Down && callDirection == Car.Direction.Down) {
+    					newFS = N + M + 2 - d - h;
+    				}
+    			case Up:
+    				if (elevatorCallDirection == Car.Direction.Down) {
+    					newFS = 1;
+    				} else if (elevatorCallDirection == Car.Direction.Up && callDirection == Car.Direction.Down) {
+    					newFS = N + M + 4 - d - h;
+    				} else if (elevatorCallDirection == Car.Direction.Up && callDirection == Car.Direction.Up) {
+    					newFS = N + M + 2 - d - h;
+    				}
+    			case Left:
+    				if (elevatorCallDirection == Car.Direction.Left) {
+    					newFS = 1;
+    				} else if (elevatorCallDirection == Car.Direction.Right && callDirection == Car.Direction.Left) {
+    					newFS = N + M + 4 - d - h;
+    				} else if (elevatorCallDirection == Car.Direction.Right && callDirection == Car.Direction.Right) {
+    					newFS = N + M + 2 - d - h;
+    				}
+    			case Right:
+  					if (elevatorCallDirection == Car.Direction.Right) {
+    					newFS = 1;
+    				} else if (elevatorCallDirection == Car.Direction.Left && callDirection == Car.Direction.Right) {
+    					newFS = N + M + 4 - d - h;
+    				} else if (elevatorCallDirection == Car.Direction.Left && callDirection == Car.Direction.Left) {
+    					newFS = N + M + 2 - d - h;
+    		    }
+				
+    		}if (newFS > FS) {
+    			selectedCar = cars.get(i);
+    			FS = newFS;
+    		}
+		}
+
+		return selectedCar;
 	}
 
 	int tTicker = 0;
@@ -31,7 +93,16 @@ public class MultiDirController extends GroupControl {
 
 
         for(Car car : building.getCars()) {
-
+        	if(optimized) {
+        		if(!car.isBusy()) {
+        			switch (currentPattern) {
+        				case UpPeak:
+        					car.setDestination(building.getTerminalFloor());
+        				case DownPeak:
+        					break;
+        			}
+        		}
+        	}
         	car.move(building, time);
         }
 

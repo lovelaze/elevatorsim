@@ -8,6 +8,8 @@ ncChart:
 	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main nc chart
 ncLog:
 	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main nc true
+ncOpt:
+	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main nc false true
 fso:
 	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main fso
 fsoChart:
@@ -20,3 +22,5 @@ multiChart:
 	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main multi chart
 multiLog:
 	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main multi true
+multiOpt:
+	java -cp lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:. Main multi false true

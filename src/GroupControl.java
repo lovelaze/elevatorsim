@@ -55,4 +55,20 @@ public abstract class GroupControl {
         return direction;
     }
 
+    protected Car.Direction getDirection(Floor from, Floor to, Shaft fromShaft, Shaft toShaft) {
+        Car.Direction direction = Car.Direction.Idle;
+        if(from.getLevel() < to.getLevel())
+            direction = Car.Direction.Up;
+        else if(from.getLevel() > to.getLevel())
+            direction = Car.Direction.Down;
+        else if(toShaft.getIndex() < fromShaft.getIndex())
+            direction = Car.Direction.Left;
+        else if(toShaft.getIndex() > fromShaft.getIndex())
+            direction = Car.Direction.Right;
+        else if(from.getLevel() == to.getLevel())
+            direction = Car.Direction.Idle;
+
+        return direction;
+    }
+
 }
